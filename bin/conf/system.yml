@@ -1,0 +1,3 @@
+server:
+    work_path: /apps/work/yancy
+    pid_file: yancy.pid

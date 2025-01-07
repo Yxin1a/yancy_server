@@ -1,0 +1,3 @@
+servlets: #/home/tq/桌面/yancy
+    - uri: /yancy_server/http/html/baidu
+      type: html  #类型
