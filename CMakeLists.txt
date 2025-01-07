@@ -31,7 +31,7 @@ set(LIB_SRC #要编译的源码路径
     yancy_server/http/http_parser.cpp
     yancy_server/tcp_server.cpp
     yancy_server/stream.cpp
-    streams/socket_stream.cpp
+    yancy_server/streams/socket_stream.cpp
     yancy_server/http/http_session.cpp
     yancy_server/http/http_server.cpp
     yancy_server/http/servlet.cpp
@@ -64,7 +64,7 @@ find_library(PTHREAD pthread)
 # endif()
 
 set(LIBS #要依赖的库
-        dl  #hook库
+        dl  #hook库——libdl 库
         yancy_server    #自定义共享库
         pthread #多线程
         yaml-cpp    #yaml-cpp

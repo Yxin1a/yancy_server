@@ -12,10 +12,10 @@
 #ifndef __SYLAR_SOCKET_STREAM_H__
 #define __SYLAR_SOCKET_STREAM_H__
 
-#include "../yancy_server/stream.h"
-#include "../yancy_server/socket.h"
-#include "../yancy_server/mutex.h"
-#include "../yancy_server/iomanager.h"
+#include "yancy_server/stream.h"
+#include "yancy_server/socket.h"
+#include "yancy_server/mutex.h"
+#include "yancy_server/iomanager.h"
 
 namespace yancy
 {
