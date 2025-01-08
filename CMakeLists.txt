@@ -64,12 +64,12 @@ find_library(PTHREAD pthread)
 # endif()
 
 set(LIBS #要依赖的库
-        dl  #hook库——libdl 库
         yancy_server    #自定义共享库
         pthread #多线程
         yaml-cpp    #yaml-cpp
         # ${ZLIB_LIBRARIES} #zlib库
         # ${OPENSSL_LIBRARIES} #openssl库
+        dl  #hook库——libdl 库
     )
     
 message("***",${LIBS})   #在日志中记录指定的消息文本

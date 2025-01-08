@@ -1,3 +1,5 @@
 build/*
 thirdparty/yaml-cpp/build/
 lib/*
+*.vscode/
+apps/logs/*
