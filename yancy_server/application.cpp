@@ -20,7 +20,7 @@
 namespace yancy
 {
 
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     static yancy::ConfigVar<std::string>::ptr g_server_work_path =  //工作目录的路径
         yancy::Config::Lookup("server.work_path"
@@ -70,7 +70,7 @@ namespace yancy
         }
 
         std::string conf_path = yancy::EnvMgr::GetInstance()->getConfigPath();  //获取配置文件的绝对路径
-        SYLAR_LOG_INFO(g_logger) << "load conf path:" << conf_path;
+        YANCY_LOG_INFO(g_logger) << "load conf path:" << conf_path;
         yancy::Config::LoadFromConfDir(conf_path);  //加载path文件夹里面的配置文件(如果配置文件没有变化，则不用加载该文件)
 
         // ModuleMgr::GetInstance()->init();
@@ -114,14 +114,14 @@ namespace yancy
                                     + "/" + g_server_pid_file->getValue();
         if(yancy::FSUtil::IsRunningPidfile(pidfile))    //判断进程pid文件是否存在且正在运行
         {
-            SYLAR_LOG_ERROR(g_logger) << "server is running:" << pidfile;
+            YANCY_LOG_ERROR(g_logger) << "server is running:" << pidfile;
             return false;
         }
 
         if(!yancy::FSUtil::Mkdir(g_server_work_path->getValue()))   //创建工作目录的路径
         {
-            // SYLAR_LOG_INFO(g_logger)<<"a";
-            SYLAR_LOG_FATAL(g_logger) << "create work path [" << g_server_work_path->getValue()
+            // YANCY_LOG_INFO(g_logger)<<"a";
+            YANCY_LOG_FATAL(g_logger) << "create work path [" << g_server_work_path->getValue()
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return false;
         }
@@ -139,7 +139,7 @@ namespace yancy
     int Application::main(int argc, char** argv)    //服务器真正开始启动的函数
     {
         signal(SIGPIPE, SIG_IGN);
-        SYLAR_LOG_INFO(g_logger) << "main";
+        YANCY_LOG_INFO(g_logger) << "main";
         std::string conf_path = yancy::EnvMgr::GetInstance()->getConfigPath();  //获取配置文件的绝对路径
         yancy::Config::LoadFromConfDir(conf_path, true);    //加载path文件夹里面的配置文件(如果配置文件没有变化，则不用加载该文件)
         {
@@ -148,7 +148,7 @@ namespace yancy
             std::ofstream ofs(pidfile); 
             if(!ofs)
             {
-                SYLAR_LOG_ERROR(g_logger) << "open pidfile " << pidfile << " failed";
+                YANCY_LOG_ERROR(g_logger) << "open pidfile " << pidfile << " failed";
                 return false;
             }
             ofs << getpid();    //写入当前服务器的进程ID(守护进程——子进程，没——父进程)到进程文件中
@@ -157,7 +157,7 @@ namespace yancy
         m_mainIOManager.reset(new yancy::IOManager(2, true, "main"));   //创建协程调度器
         m_mainIOManager->schedule(std::bind(&Application::run_fiber, this));    //run_fiber插入协程队列1
         m_mainIOManager->addTimer(2000, [](){   //插入epoll事件定时器
-                // SYLAR_LOG_INFO(g_logger) << "hello";
+                // YANCY_LOG_INFO(g_logger) << "hello";
         }, true);
         m_mainIOManager->stop();    //协程调度器关闭
         return 0;
@@ -172,7 +172,7 @@ namespace yancy
         // {
         //     if(!i->onLoad())
         //     {
-        //         SYLAR_LOG_ERROR(g_logger) << "module name="
+        //         YANCY_LOG_ERROR(g_logger) << "module name="
         //             << i->getName() << " version=" << i->getVersion()
         //             << " filename=" << i->getFilename();
         //         has_error = true;
@@ -192,7 +192,7 @@ namespace yancy
         std::vector<TcpServer::ptr> svrs;   //成功创建的Tcp服务器集合
         for(auto& i : http_confs)   //遍历TcpServerConf结构体
         {
-            SYLAR_LOG_DEBUG(g_logger) <<std::endl << LexicalCast<TcpServerConf, std::string>()(i); //把 TcpServerConf结构体 转化成 服务器配置文件
+            YANCY_LOG_DEBUG(g_logger) <<std::endl << LexicalCast<TcpServerConf, std::string>()(i); //把 TcpServerConf结构体 转化成 服务器配置文件
 
             std::vector<Address::ptr> address;  //存储服务器地址的address
             for(auto& a : i.address)    //处理服务器绑定地址，生成Address
@@ -202,7 +202,7 @@ namespace yancy
                 //Unix地址 
                 if(pos == std::string::npos)    //没有IP地址和端口号，则是Unix地址   
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "invalid address: " << a;
+                    YANCY_LOG_ERROR(g_logger) << "invalid address: " << a;
                     address.push_back(UnixAddress::ptr(new UnixAddress(a)));    //是Unix地址
                     continue;
                 }
@@ -240,7 +240,7 @@ namespace yancy
                     address.push_back(aaddr);
                     continue;
                 }
-                SYLAR_LOG_ERROR(g_logger) << "invalid address: " << a;
+                YANCY_LOG_ERROR(g_logger) << "invalid address: " << a;
                 _exit(0);
             }
             
@@ -252,7 +252,7 @@ namespace yancy
             //     accept_worker = yancy::WorkerMgr::GetInstance()->getAsIOManager(i.accept_worker).get();
             //     if(!accept_worker)
             //     {
-            //         SYLAR_LOG_ERROR(g_logger) << "accept_worker: " << i.accept_worker
+            //         YANCY_LOG_ERROR(g_logger) << "accept_worker: " << i.accept_worker
             //             << " not exists";
             //         _exit(0);
             //     }
@@ -262,7 +262,7 @@ namespace yancy
             //     io_worker = yancy::WorkerMgr::GetInstance()->getAsIOManager(i.io_worker).get();
             //     if(!io_worker)
             //     {
-            //         SYLAR_LOG_ERROR(g_logger) << "io_worker: " << i.io_worker
+            //         YANCY_LOG_ERROR(g_logger) << "io_worker: " << i.io_worker
             //             << " not exists";
             //         _exit(0);
             //     }
@@ -272,7 +272,7 @@ namespace yancy
             //     process_worker = yancy::WorkerMgr::GetInstance()->getAsIOManager(i.process_worker).get();
             //     if(!process_worker)
             //     {
-            //         SYLAR_LOG_ERROR(g_logger) << "process_worker: " << i.process_worker
+            //         YANCY_LOG_ERROR(g_logger) << "process_worker: " << i.process_worker
             //             << " not exists";
             //         _exit(0);
             //     }
@@ -299,7 +299,7 @@ namespace yancy
             // }
             else    //出错
             {
-                SYLAR_LOG_ERROR(g_logger) << "invalid server type=" << i.type
+                YANCY_LOG_ERROR(g_logger) << "invalid server type=" << i.type
                     << LexicalCast<TcpServerConf, std::string>()(i);
                 _exit(0);
             }
@@ -314,7 +314,7 @@ namespace yancy
             {
                 for(auto& x : fails)
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "bind address fail:"
+                    YANCY_LOG_ERROR(g_logger) << "bind address fail:"
                         << *x;
                 }
                 _exit(0);                
@@ -335,7 +335,7 @@ namespace yancy
             // {
             //     if(!server->loadCertificates(i.cert_file, i.key_file))
             //     {
-            //         SYLAR_LOG_ERROR(g_logger) << "loadCertificates fail, cert_file="
+            //         YANCY_LOG_ERROR(g_logger) << "loadCertificates fail, cert_file="
             //             << i.cert_file << " key_file=" << i.key_file;
             //     }
             // }

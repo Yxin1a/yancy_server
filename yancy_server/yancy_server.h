@@ -1,6 +1,6 @@
 //头文件继承
-#ifndef __SYLAR_SYLAR_H__
-#define __SYLAR_SYLAR_H__
+#ifndef __YANCY_YANCY_H__
+#define __YANCY_YANCY_H__
 
 #include"macro.h"
 #include"config.h"

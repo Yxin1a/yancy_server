@@ -1,6 +1,6 @@
 #include"../yancy_server/yancy_server.h"
 
-yancy::Logger::ptr g_logger=SYLAR_LOG_ROOT();
+yancy::Logger::ptr g_logger=YANCY_LOG_ROOT();
 
 int count=0;    //公共数据
 //yancy::RWMutex s_mutex; //读写互斥量
@@ -9,7 +9,7 @@ yancy::Mutex s_mutex; //互斥量
 
 void fun1()
 {
-    SYLAR_LOG_INFO(g_logger)<<"name: "<<yancy::Thread::GetName()
+    YANCY_LOG_INFO(g_logger)<<"name: "<<yancy::Thread::GetName()
                             <<" this.name: "<<yancy::Thread::GetThis()->getName()
                             <<" id: "<<yancy::GetThreadId()
                             <<" this.id: "<<yancy::Thread::GetThis()->getId();
@@ -26,7 +26,7 @@ void fun2()
 {
     while(true)
     {
-        SYLAR_LOG_INFO(g_logger)<<"*************************";
+        YANCY_LOG_INFO(g_logger)<<"*************************";
     }
 }
 
@@ -34,13 +34,13 @@ void fun3()
 {
     while (true)
     {
-        SYLAR_LOG_INFO(g_logger)<<"=========================";
+        YANCY_LOG_INFO(g_logger)<<"=========================";
     }
 }
 
 int main(int argc,char** argv)
 {
-    SYLAR_LOG_INFO(g_logger)<<"thread test begin";
+    YANCY_LOG_INFO(g_logger)<<"thread test begin";
 
     YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log2.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
@@ -59,8 +59,8 @@ int main(int argc,char** argv)
     {
         thrs[i]->join();    //等待子线程执行完
     }
-    SYLAR_LOG_INFO(g_logger)<<"thread test end";
-    SYLAR_LOG_INFO(g_logger)<<"count= "<<count;
+    YANCY_LOG_INFO(g_logger)<<"thread test end";
+    YANCY_LOG_INFO(g_logger)<<"count= "<<count;
 
     return 0;
 }

@@ -8,7 +8,7 @@ namespace yancy
     namespace http
     {
 
-        static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+        static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
         std::string HttpResult::toString() const    //以字符串的形式输出错误码
         {
@@ -27,7 +27,7 @@ namespace yancy
 
         HttpConnection::~HttpConnection()   //打印日志
         {
-            SYLAR_LOG_DEBUG(g_logger) << "HttpConnection::~HttpConnection";
+            YANCY_LOG_DEBUG(g_logger) << "HttpConnection::~HttpConnection";
         }
 
         HttpResponse::ptr HttpConnection::recvResponse()    //接收HTTP响应，解析响应协议
@@ -102,7 +102,7 @@ namespace yancy
                     } while(!parser->isFinished()); //解析成功
                     //len -= 2;
                     
-                    SYLAR_LOG_DEBUG(g_logger) << "content_len=" << client_parser.content_len;
+                    YANCY_LOG_DEBUG(g_logger) << "content_len=" << client_parser.content_len;
                     if(client_parser.content_len + 2 <= len)    //实际消息体 < 消息体
                     {
                         body.append(data, client_parser.content_len);   //存进消息体中
@@ -162,7 +162,7 @@ namespace yancy
             if(!body.empty())
             {
                 // auto content_encoding = parser->getData()->getHeader("content-encoding");
-                // SYLAR_LOG_DEBUG(g_logger) << "content_encoding: " << content_encoding
+                // YANCY_LOG_DEBUG(g_logger) << "content_encoding: " << content_encoding
                 //     << " size=" << body.size();
                 // if(strcasecmp(content_encoding.c_str(), "gzip") == 0)
                 // {
@@ -349,7 +349,7 @@ namespace yancy
             Uri::ptr turi = Uri::Create(uri);   //创建Uri对象，并解析uri(网址)
             if(!turi)
             {
-                SYLAR_LOG_ERROR(g_logger) << "invalid uri=" << uri;
+                YANCY_LOG_ERROR(g_logger) << "invalid uri=" << uri;
             }
             return std::make_shared<HttpConnectionPool>(turi->getHost()
                     , vhost, turi->getPort(), turi->getScheme() == "https"
@@ -407,7 +407,7 @@ namespace yancy
                 IPAddress::ptr addr = Address::LookupAnyIPAddress(m_host);  //通过host地址返回对应条件的任意IPAddress
                 if(!addr)
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "get addr fail: " << m_host;
+                    YANCY_LOG_ERROR(g_logger) << "get addr fail: " << m_host;
                     return nullptr;
                 }
                 addr->setPort(m_port);
@@ -415,12 +415,12 @@ namespace yancy
                 Socket::ptr sock = Socket::CreateTCP(addr);
                 if(!sock)
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "create sock fail: " << *addr;
+                    YANCY_LOG_ERROR(g_logger) << "create sock fail: " << *addr;
                     return nullptr;
                 }
                 if(!sock->connect(addr))    //客户端连接服务器地址 
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "sock connect fail: " << *addr;
+                    YANCY_LOG_ERROR(g_logger) << "sock connect fail: " << *addr;
                     return nullptr;
                 }
 

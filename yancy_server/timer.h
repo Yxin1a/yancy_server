@@ -1,6 +1,6 @@
 //  定时器封装
-#ifndef __SYLAR_TIMER_H__
-#define __SYLAR_TIMER_H__
+#ifndef __YANCY_TIMER_H__
+#define __YANCY_TIMER_H__
 
 #include<memory>
 #include<set>

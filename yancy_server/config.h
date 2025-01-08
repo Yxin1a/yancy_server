@@ -5,8 +5,8 @@
 //yaml文件 ——解析——> yaml::node格式 ——解析——>程序各种类型的格式（string）
 //YAML：：Node是静态全局变量
 
-#ifndef __SYLAR_CONFIG_H__
-#define __SYLAR_CONFIG_H__
+#ifndef __YANCY_CONFIG_H__
+#define __YANCY_CONFIG_H__
 
 #include<memory>  //智能指针
 #include<sstream> //流
@@ -379,7 +379,7 @@ namespace yancy
             }
             catch (std::exception& e)   //catch引发特定异常时执行的代码块   exception抓异常信息
             {
-                SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "ConfigVar::toString exception"
+                YANCY_LOG_ERROR(YANCY_LOG_ROOT()) << "ConfigVar::toString exception"
                     << e.what() << "convert:" << typeid(m_val).name()<< "to string";
                     //<<"name="<<m_name;
                     //what()用于获取字符串标识异常。此函数返回一个空终止的字符序列，该序列可用于标识异常
@@ -401,7 +401,7 @@ namespace yancy
             }
             catch (std::exception& e)   //catch引发特定异常时执行的代码块   exception抓异常信息
             {
-                SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "ConfigVar::toString exception"
+                YANCY_LOG_ERROR(YANCY_LOG_ROOT()) << "ConfigVar::toString exception"
                     << e.what() << "convert:string to" << typeid(m_val).name()<<"-"<<val;
                     //what()用于获取字符串标识异常。此函数返回一个空终止的字符序列，该序列可用于标识异常
                     //typeid()用来获取一个表达式的类型信息。(typeid(m_val)是ConfigVarBase类型)
@@ -529,12 +529,12 @@ namespace yancy
                     auto tmp=std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
                     if (tmp)    //该配置参数名称已存在
                     {
-                        SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "Lookup name=" << name << "exists";
+                        YANCY_LOG_INFO(YANCY_LOG_ROOT()) << "Lookup name=" << name << "exists";
                         return tmp;
                     }
                     else
                     {
-                        SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name=" << name << "exists but type not"
+                        YANCY_LOG_ERROR(YANCY_LOG_ROOT()) << "Lookup name=" << name << "exists but type not"
                                 <<typeid(T).name()<<"real_type="<<it->second->getTypeName() ////typeid()用来获取一个表达式的类型信息。(typeid(m_val)是ConfigVarBase类型)
                                 <<" "<<it->second->toString();
                         return nullptr;
@@ -542,7 +542,7 @@ namespace yancy
                 }
                 if (name.find_first_not_of("abcdefghijklmnopqrstuvwxyz._012345678") != std::string::npos)   //find_first_not_of()搜索与其参数中指定的任何字符不匹配的第一个字符
                 { //该配置参数名称无效                                                                       //成功时第一个不匹配字符的索引，如果未找到此类字符，则返回字符串：：npos
-                    SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Lookup name invalid" << name;
+                    YANCY_LOG_ERROR(YANCY_LOG_ROOT()) << "Lookup name invalid" << name;
                     throw std::invalid_argument(name);
                 }
                 typename ConfigVar<T>::ptr v(new ConfigVar<T>(name, default_value, description));   //创建配置参数

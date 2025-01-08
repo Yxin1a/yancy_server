@@ -1,6 +1,6 @@
 //  删除默认拷贝构造函数，即不能进行默认拷贝
-#ifndef __SYLAR_NONCOPYABLE_H__
-#define __SYLAR_NONCOPYABLE_H__
+#ifndef __YANCY_NONCOPYABLE_H__
+#define __YANCY_NONCOPYABLE_H__
 
 namespace yancy
 {

@@ -1,8 +1,8 @@
 //  守护进程
 //父进程————>子进程出问题，重启子进程
 //主(子)进程————>执行server服务器
-#ifndef __SYLAR_DAEMON_H__
-#define __SYLAR_DAEMON_H__
+#ifndef __YANCY_DAEMON_H__
+#define __YANCY_DAEMON_H__
 
 #include <unistd.h>
 #include <functional>

@@ -6,7 +6,7 @@ namespace yancy
     namespace http
     {
         
-        static yancy::Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+        static yancy::Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
         //ServletPath
         ServletPath::ServletPath(ServletPathConf conf) //初始化
@@ -24,7 +24,7 @@ namespace yancy
             ifs.open(path,std::ios::in);
             if(!ifs)
             {
-                SYLAR_LOG_INFO(g_logger)<<path<<" html file is exist";
+                YANCY_LOG_INFO(g_logger)<<path<<" html file is exist";
                 return false;
             }
             std::string buf;
@@ -39,7 +39,7 @@ namespace yancy
         {
             if(m_conf.type!="html")
             {
-                SYLAR_LOG_ERROR(g_logger)<<"servlet type error";
+                YANCY_LOG_ERROR(g_logger)<<"servlet type error";
                 return false;
             }
             dispatch->addServlet(m_conf.uri,[](yancy::http::HttpRequest::ptr req    //添加精准匹配servlet(回调函数)

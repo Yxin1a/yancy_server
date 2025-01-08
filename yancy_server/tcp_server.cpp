@@ -9,7 +9,7 @@ namespace yancy
         yancy::Config::Lookup("tcp_server.read_timeout", (uint64_t)(60 * 1000 * 2), //
                 "tcp server read timeout");
 
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     // TcpServer
 
@@ -48,7 +48,7 @@ namespace yancy
             Socket::ptr sock = Socket::CreateTCP(addr);
             if(!sock->bind(addr))   //服务器绑定IP地址
             {
-                SYLAR_LOG_ERROR(g_logger) << "bind fail errno="
+                YANCY_LOG_ERROR(g_logger) << "bind fail errno="
                     << errno << " errstr=" << strerror(errno)
                     << " addr=[" << addr->toString() << "]";
                 fails.push_back(addr);
@@ -56,7 +56,7 @@ namespace yancy
             }
             if(!sock->listen()) //监听socket客户端连接
             {
-                SYLAR_LOG_ERROR(g_logger) << "listen fail errno="
+                YANCY_LOG_ERROR(g_logger) << "listen fail errno="
                     << errno << " errstr=" << strerror(errno)
                     << " addr=[" << addr->toString() << "]";
                 fails.push_back(addr);
@@ -73,7 +73,7 @@ namespace yancy
 
         for(auto& i : m_socks)  //打印成功(正在监听客户端的socket)
         {
-            SYLAR_LOG_INFO(g_logger) << "type=" << m_type
+            YANCY_LOG_INFO(g_logger) << "type=" << m_type
                 << " name=" << m_name
                 << " ssl=" << m_ssl
                 << " server bind success: " << *i;
@@ -153,7 +153,7 @@ namespace yancy
     
     void TcpServer::handleClient(Socket::ptr client)  //处理新连接的Socket类(处理新连接的客户端数据传输)
     {
-        SYLAR_LOG_INFO(g_logger) << "handleClient: "<< *client;
+        YANCY_LOG_INFO(g_logger) << "handleClient: "<< *client;
     }
     
     void TcpServer::startAccept(Socket::ptr sock) //开始接受连接客户端连接，并安排线程处理
@@ -169,7 +169,7 @@ namespace yancy
             }
             else    //失败
             {
-                SYLAR_LOG_ERROR(g_logger) << "accept errno=" << errno
+                YANCY_LOG_ERROR(g_logger) << "accept errno=" << errno
                     << " errstr=" << strerror(errno);
             }
         }

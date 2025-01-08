@@ -1,6 +1,6 @@
 //常用宏的封装
-#ifndef __SYLAR_MACRO_H__   //防止头文件重复
-#define __SYLAR_MACRO_H__
+#ifndef __YANCY_MACRO_H__   //防止头文件重复
+#define __YANCY_MACRO_H__
 
 //协程——>线程——>进程
 //轻量————————>重量
@@ -16,12 +16,12 @@
 //成功概率大，小，使用可以提高性能
 #if defined __GNUC__ || defined __llvm__    //有些编译器执行，有些不执行
 /// LIKCLY 宏的封装, 告诉编译器优化,条件大概率成立(成功几率大)
-#   define SYLAR_LIKELY(x)       __builtin_expect(!!(x), 1)
+#   define YANCY_LIKELY(x)       __builtin_expect(!!(x), 1)
 /// LIKCLY 宏的封装, 告诉编译器优化,条件大概率不成立(成功几率小)
-#   define SYLAR_UNLIKELY(x)     __builtin_expect(!!(x), 0)
+#   define YANCY_UNLIKELY(x)     __builtin_expect(!!(x), 0)
 #else
-#   define SYLAR_LIKELY(x)      (x)
-#   define SYLAR_UNLIKELY(x)      (x)
+#   define YANCY_LIKELY(x)      (x)
+#   define YANCY_UNLIKELY(x)      (x)
 #endif
 
 /*  assert()
@@ -36,20 +36,20 @@
 
 //assert()生成的错误信息在core文件中，要在vscode的gdb调试查看
 //断言(逻辑判断式)宏封装——当程序执行到断言的位置时，对应的断言应该为真。若断言不为真时，程序会中止执行，并给出错误信息。
-#define SYLAR_ASSERT(x) \
-    if(SYLAR_UNLIKELY(!(x))) \
+#define YANCY_ASSERT(x) \
+    if(YANCY_UNLIKELY(!(x))) \
     { \
-        SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())<<"ASSERTION:"#x \
+        YANCY_LOG_ERROR(YANCY_LOG_ROOT())<<"ASSERTION:"#x \
             <<"\nbacktrace:\n" \
             <<yancy::BacktraceToString(100,2,"   "); \
         assert(x); \
     }
 
 //断言(逻辑判断式)宏封装——当程序执行到断言的位置时，对应的断言应该为真。若断言不为真时，程序会中止执行，并给出错误信息。
-#define SYLAR_ASSERT2(x,w) \
-    if(SYLAR_UNLIKELY(!(x))) \
+#define YANCY_ASSERT2(x,w) \
+    if(YANCY_UNLIKELY(!(x))) \
     { \
-        SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())<<"ASSERTION:"#x \
+        YANCY_LOG_ERROR(YANCY_LOG_ROOT())<<"ASSERTION:"#x \
             <<"\n"<<w \
             <<"\nbacktrace:\n" \
             <<yancy::BacktraceToString(100,2,"   "); \

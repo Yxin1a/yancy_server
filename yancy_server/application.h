@@ -4,8 +4,8 @@
 //  -s  非守护进程
 //  -d  守护进程
 //  -p  打印参数
-#ifndef __SYLAR_APPLICATION_H__
-#define __SYLAR_APPLICATION_H__
+#ifndef __YANCY_APPLICATION_H__
+#define __YANCY_APPLICATION_H__
 
 #include "yancy_server/http/http_server.h"
 // #include "yancy-master/streams/service_discovery.h"

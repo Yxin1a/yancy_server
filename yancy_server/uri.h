@@ -8,8 +8,8 @@
          |              |              |           |        |
         scheme      authority         path       query    fragment
 */
-#ifndef __SYLAR_URI_H__
-#define __SYLAR_URI_H__
+#ifndef __YANCY_URI_H__
+#define __YANCY_URI_H__
 
 #include <memory>
 #include <string>

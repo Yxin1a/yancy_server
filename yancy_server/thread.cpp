@@ -8,7 +8,7 @@ namespace yancy
     static thread_local Thread* t_thread=nullptr;       //当前的线程指针
     static thread_local std::string t_thread_name="UNKNOW";     //当前的线程名称
 
-    static yancy::Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
     Thread* Thread::GetThis()   //获取当前的线程指针
     {
@@ -44,7 +44,7 @@ namespace yancy
                                                                         //④ 执行函数的参数。
         if(rt)  //线程创建失败
         {
-            SYLAR_LOG_ERROR(g_logger)<<"pthread_create thread fail,rt="<<rt<<" name="<<name;
+            YANCY_LOG_ERROR(g_logger)<<"pthread_create thread fail,rt="<<rt<<" name="<<name;
             throw std::logic_error("pthread_create error"); //logic_error报告错误
         }
         m_semphore.wait();  //加锁等待——保证原子性(保证创建线程成功)
@@ -66,7 +66,7 @@ namespace yancy
                                                     //② 指针，用来存储被等待线程的返回值
             if(rt)
             {
-                SYLAR_LOG_ERROR(g_logger)<<"pthread_join thread fail,rt="<<rt<<" name="<<m_name;
+                YANCY_LOG_ERROR(g_logger)<<"pthread_join thread fail,rt="<<rt<<" name="<<m_name;
                 throw std::logic_error("pthread_join error");   //logic_error报告错误
             }
             m_thread=0;

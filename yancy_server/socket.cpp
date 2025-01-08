@@ -8,7 +8,7 @@
 
 namespace yancy
 {
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     //Socket
     Socket::ptr Socket::CreateTCP(yancy::Address::ptr address)  //创建TCP Socket(满足地址类型)
@@ -120,7 +120,7 @@ namespace yancy
                                                                                 //len：optval的长度。
         if(rt)
         {
-            SYLAR_LOG_DEBUG(g_logger) << "getOption sock=" << m_sock
+            YANCY_LOG_DEBUG(g_logger) << "getOption sock=" << m_sock
                 << " level=" << level << " option=" << option
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return false;
@@ -137,7 +137,7 @@ namespace yancy
                                                                         //result：指向某个变量的指针，该变量是要设置选项的值。可以是一个结构体，也可以是普通变量
                                                                         //len：optval的长度。
         {
-            SYLAR_LOG_DEBUG(g_logger) << "setOption sock=" << m_sock
+            YANCY_LOG_DEBUG(g_logger) << "setOption sock=" << m_sock
                 << " level=" << level << " option=" << option
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return false;
@@ -151,7 +151,7 @@ namespace yancy
         int newsock = ::accept(m_sock, nullptr, nullptr);   //newsock客户端对象 ::accept用的是系统的函数(全局)  *accept函数是接受所有和服务器连接的客户端
         if(newsock == -1)   //失败
         {
-            SYLAR_LOG_ERROR(g_logger) << "accept(" << m_sock << ") errno="
+            YANCY_LOG_ERROR(g_logger) << "accept(" << m_sock << ") errno="
                 << errno << " errstr=" << strerror(errno);
             return nullptr;
         }
@@ -167,15 +167,15 @@ namespace yancy
         if(!isValid())  //m_sock是否有效
         {
             newSock();  //创建新的socket(赋予到m_sock)
-            if(SYLAR_UNLIKELY(!isValid()))  
+            if(YANCY_UNLIKELY(!isValid()))  
             {
                 return false;
             }
         }
 
-        if(SYLAR_UNLIKELY(addr->getFamily() != m_family))   //协议簇(IP协议)不一致
+        if(YANCY_UNLIKELY(addr->getFamily() != m_family))   //协议簇(IP协议)不一致
         {
-            SYLAR_LOG_ERROR(g_logger) << "bind sock.family("
+            YANCY_LOG_ERROR(g_logger) << "bind sock.family("
                 << m_family << ") addr.family(" << addr->getFamily()
                 << ") not equal, addr=" << addr->toString();
             return false;
@@ -198,7 +198,7 @@ namespace yancy
         //m_localAddress = addr;
         if(::bind(m_sock, addr->getAddr(), addr->getAddrLen())) //服务器绑定IP地址
         {
-            SYLAR_LOG_ERROR(g_logger) << "bind error errrno=" << errno
+            YANCY_LOG_ERROR(g_logger) << "bind error errrno=" << errno
                 << " errstr=" << strerror(errno);
             return false;
         }
@@ -212,15 +212,15 @@ namespace yancy
         if(!isValid())  //m_sock是否有效
         {
             newSock();  //创建新的socket(赋予到m_sock)
-            if(SYLAR_UNLIKELY(!isValid()))  
+            if(YANCY_UNLIKELY(!isValid()))  
             {
                 return false;
             }
         }
 
-        if(SYLAR_UNLIKELY(addr->getFamily() != m_family))   //协议簇(IP协议)不一致
+        if(YANCY_UNLIKELY(addr->getFamily() != m_family))   //协议簇(IP协议)不一致
         {
-            SYLAR_LOG_ERROR(g_logger) << "connect sock.family("
+            YANCY_LOG_ERROR(g_logger) << "connect sock.family("
                 << m_family << ") addr.family(" << addr->getFamily()
                 << ") not equal, addr=" << addr->toString();
             return false;
@@ -230,7 +230,7 @@ namespace yancy
         {
             if(::connect(m_sock, addr->getAddr(), addr->getAddrLen()))  //客户端连接服务器地址
             {
-                SYLAR_LOG_ERROR(g_logger) << "sock=" << m_sock << " connect(" << addr->toString()
+                YANCY_LOG_ERROR(g_logger) << "sock=" << m_sock << " connect(" << addr->toString()
                     << ") error errno=" << errno << " errstr=" << strerror(errno);
                 close();
                 return false;
@@ -240,7 +240,7 @@ namespace yancy
         {
             if(::connect_with_timeout(m_sock, addr->getAddr(), addr->getAddrLen(), timeout_ms)) //客户端连接服务器地址(增加了超时变量)
             {
-                SYLAR_LOG_ERROR(g_logger) << "sock=" << m_sock << " connect(" << addr->toString()
+                YANCY_LOG_ERROR(g_logger) << "sock=" << m_sock << " connect(" << addr->toString()
                     << ") timeout=" << timeout_ms << " error errno="
                     << errno << " errstr=" << strerror(errno);
                 close();
@@ -257,7 +257,7 @@ namespace yancy
     {
         if(!m_remoteAddress)
         {
-            SYLAR_LOG_ERROR(g_logger) << "reconnect m_remoteAddress is null";
+            YANCY_LOG_ERROR(g_logger) << "reconnect m_remoteAddress is null";
             return false;
         }
         m_localAddress.reset();
@@ -268,12 +268,12 @@ namespace yancy
     {
         if(!isValid())  //m_sock是否有效
         {
-            SYLAR_LOG_ERROR(g_logger) << "listen error sock=-1";
+            YANCY_LOG_ERROR(g_logger) << "listen error sock=-1";
             return false;
         }
         if(::listen(m_sock, backlog))   //监听socket客户端连接
         {
-            SYLAR_LOG_ERROR(g_logger) << "listen error errno=" << errno
+            YANCY_LOG_ERROR(g_logger) << "listen error errno=" << errno
                 << " errstr=" << strerror(errno);
             return false;
         }
@@ -451,7 +451,7 @@ namespace yancy
         socklen_t addrlen = result->getAddrLen();
         if(getsockname(m_sock, result->getAddr(), &addrlen))    //getsockname获取与m_sock套接字关联的本地协议地址  赋予到result(sockaddr结构中)
         {
-            SYLAR_LOG_ERROR(g_logger) << "getsockname error sock=" << m_sock
+            YANCY_LOG_ERROR(g_logger) << "getsockname error sock=" << m_sock
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return Address::ptr(new UnknownAddress(m_family));  //getsockname失败
         }
@@ -537,13 +537,13 @@ namespace yancy
     void Socket::newSock() //创建新的socket(赋予到m_sock)
     {
         m_sock = socket(m_family, m_type, m_protocol);
-        if(SYLAR_LIKELY(m_sock != -1))  //成功几率大，(使用可以提高性能)
+        if(YANCY_LIKELY(m_sock != -1))  //成功几率大，(使用可以提高性能)
         {
             initSock(); //初始化socket(m_sock)
         }
         else    //成功几率小，(使用可以提高性能)
         {
-            SYLAR_LOG_ERROR(g_logger) << "socket(" << m_family
+            YANCY_LOG_ERROR(g_logger) << "socket(" << m_family
                 << ", " << m_type << ", " << m_protocol << ") errno="
                 << errno << " errstr=" << strerror(errno);
         }

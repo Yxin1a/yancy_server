@@ -1,7 +1,7 @@
 #include "../yancy_server/http/http_server.h"
 #include "../yancy_server/log.h"
 
-static yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 #define XX(...) #__VA_ARGS__
 

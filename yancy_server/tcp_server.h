@@ -5,8 +5,8 @@
 //  ③接受客户端的连接 插入到调度协程中(安排空闲的线程处理 接受客户端的连接)
 //  ④对该客户端的数据传输 插入到调度协程中(安排空闲的线程处理 该客户端的数据传输)
 //(③和④的协程调度器     不一样：则是协程调度器嵌套      一样：则是使用同一个协程调度器，来先后执行)
-#ifndef __SYLAR_TCP_SERVER_H__
-#define __SYLAR_TCP_SERVER_H__
+#ifndef __YANCY_TCP_SERVER_H__
+#define __YANCY_TCP_SERVER_H__
 
 #include<memory>
 #include<functional>

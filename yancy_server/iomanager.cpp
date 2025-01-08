@@ -19,7 +19,7 @@
 
 namespace yancy
 {
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     IOManager::FdContext::EventContext& IOManager::FdContext::getContext(IOManager::Event event)    //获取事件上下文类(返回对应事件的上线文类)
     {
@@ -30,7 +30,7 @@ namespace yancy
         case IOManager::WRITE:
             return write;
         default:
-            SYLAR_ASSERT2(false,"getContext");
+            YANCY_ASSERT2(false,"getContext");
         }
     }
 
@@ -43,7 +43,7 @@ namespace yancy
 
     void IOManager::FdContext::triggerEvent(IOManager::Event event)        //触发事件(插入协程队列),event 事件类型
     {
-        SYLAR_ASSERT(events & event);   //(0x1 & 0x1)和(0x4 & 0x4)  >0
+        YANCY_ASSERT(events & event);   //(0x1 & 0x1)和(0x4 & 0x4)  >0
         events=(Event)(events & ~event);    //~是取反的意思 ~0x0=-1 ~0x1=-2 ~0x4=-1
         EventContext& ctx=getContext(event);
         if(ctx.cb)
@@ -64,10 +64,10 @@ namespace yancy
         m_epfd=epoll_create(5000);  //epoll_create()创建一个epoll树(红黑树————存事件)
                                     //参数：>0的整数
                                     //返回值：返回一个返回文件描述符(树根节点)
-        SYLAR_ASSERT(m_epfd>0);
+        YANCY_ASSERT(m_epfd>0);
         
         int rt=pipe(m_tickleFds);   //pipe管道—进程通信 pipe()创建,并打开管道   成功：0； 失败：-1
-        SYLAR_ASSERT(!rt);
+        YANCY_ASSERT(!rt);
 
         epoll_event event;
         memset(&event,0,sizeof(epoll_event));   //清零————将event中当前位置后面的sizeof(epoll_event)个字节用0替换并返回event
@@ -75,7 +75,7 @@ namespace yancy
         event.data.fd=m_tickleFds[0];   //委托内核监控的文件描述符————events的备注信息——fd(管道读写端是文件描述符)
 
         rt=fcntl(m_tickleFds[0],F_SETFL,O_NONBLOCK);    //经常用这个fcntl函数对已打开的文件描述符改变为非阻塞
-        SYLAR_ASSERT(!rt);
+        YANCY_ASSERT(!rt);
 
         rt=epoll_ctl(m_epfd,EPOLL_CTL_ADD,m_tickleFds[0],&event);   //对文件描述符m_epfd引用的文件描述符(节点)执行控制操作(添加、修改或者删除)
                                                                     //参数：epoll实例的句柄
@@ -83,7 +83,7 @@ namespace yancy
                                                                     //      要操作的文件描述符(节点)
                                                                     //      文件描述符对应的事件(修改，删除)
                                                                     //成功：0； 失败：-1
-        SYLAR_ASSERT(!rt);
+        YANCY_ASSERT(!rt);
 
         contextResize(32);
 
@@ -148,10 +148,10 @@ namespace yancy
         FdContext::MutexType::Lock lock2(fd_ctx->mutex);
         if(fd_ctx->events & event)  //&是按位与————只要有0就是0,两个都是1才是1  (0x1 & 0x1)和(0x4 & 0x4)  >0
         {
-            SYLAR_LOG_ERROR(g_logger)<<"addEvent assert fd="<<fd
+            YANCY_LOG_ERROR(g_logger)<<"addEvent assert fd="<<fd
                         <<" event="<<event
                         <<" fd_ctx.event="<<fd_ctx->events;
-            SYLAR_ASSERT(!(fd_ctx->events & event));
+            YANCY_ASSERT(!(fd_ctx->events & event));
         }
 
         int op=fd_ctx->events ? EPOLL_CTL_MOD : EPOLL_CTL_ADD;  //1则修改，2则添加
@@ -167,7 +167,7 @@ namespace yancy
                                                     //成功：0； 失败：-1
         if(rt)  //失败
         {
-            SYLAR_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
+            YANCY_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
                     <<op<<","<<fd<<","<<epevent.events<<"):"
                     <<rt<<" ("<<errno<<") ("<<strerror(errno)<<")";
             return -1;
@@ -176,7 +176,7 @@ namespace yancy
         ++m_pendingEventCount;
         fd_ctx->events=(Event)(fd_ctx->events | event);
         FdContext::EventContext& event_ctx=fd_ctx->getContext(event);
-        SYLAR_ASSERT(!event_ctx.scheduler
+        YANCY_ASSERT(!event_ctx.scheduler
                     && !event_ctx.fiber
                     && !event_ctx.cb);
 
@@ -188,7 +188,7 @@ namespace yancy
         else
         {
             event_ctx.fiber=Fiber::GetThis();
-            SYLAR_ASSERT(event_ctx.fiber->getState()==Fiber::EXEC);
+            YANCY_ASSERT(event_ctx.fiber->getState()==Fiber::EXEC);
         }
 
         return 0;
@@ -224,7 +224,7 @@ namespace yancy
                                                     //成功：0； 失败：-1
         if(rt)  //失败
         {
-            SYLAR_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
+            YANCY_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
                     <<op<<","<<fd<<","<<epevent.events<<"):"
                     <<rt<<" ("<<errno<<") ("<<strerror(errno)<<")";
             return false;
@@ -267,7 +267,7 @@ namespace yancy
                                                     //成功：0； 失败：-1
         if(rt)  //失败
         {
-            SYLAR_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
+            YANCY_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
                     <<op<<","<<fd<<","<<epevent.events<<"):"
                     <<rt<<" ("<<errno<<") ("<<strerror(errno)<<")";
             return false;
@@ -307,7 +307,7 @@ namespace yancy
                                                     //成功：0； 失败：-1
         if(rt)  //失败
         {
-            SYLAR_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
+            YANCY_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
                     <<op<<","<<fd<<","<<epevent.events<<"):"
                     <<rt<<" ("<<errno<<") ("<<strerror(errno)<<")";
             return false;
@@ -325,7 +325,7 @@ namespace yancy
             --m_pendingEventCount;
         }
         
-        SYLAR_ASSERT(fd_ctx->events==0);
+        YANCY_ASSERT(fd_ctx->events==0);
         return false;
     }
 
@@ -341,7 +341,7 @@ namespace yancy
             return;
         }
         int rt=write(m_tickleFds[1],"T",1); //服务器发到客户端
-        SYLAR_ASSERT(rt==1);
+        YANCY_ASSERT(rt==1);
     }
 
     bool IOManager::stopping()     //返回是否已经停止
@@ -360,7 +360,7 @@ namespace yancy
             uint64_t next_timeout=0;    //存储定时器的执行时间
             if(stopping(next_timeout))  //返回是否已经停止
             {
-                SYLAR_LOG_INFO(g_logger)<<"name="<<getName()
+                YANCY_LOG_INFO(g_logger)<<"name="<<getName()
                                     <<" idle stopping exit";
                 break;
             }
@@ -445,7 +445,7 @@ namespace yancy
                                                                     //成功：0； 失败：-1
                 if(rt2)  //失败
                 {
-                    SYLAR_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
+                    YANCY_LOG_ERROR(g_logger)<<"epoll_ctl("<<m_epfd<<", "
                             <<op<<","<<fd_ctx->fd<<","<<event.events<<"):"
                             <<rt2<<" ("<<errno<<") ("<<strerror(errno)<<")";
                     continue;

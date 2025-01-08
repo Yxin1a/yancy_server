@@ -1,7 +1,7 @@
 #include "../yancy_server/http/http_parser.h"
 #include "../yancy_server/log.h"
 
-static yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 const char test_request_data[] = "POST / HTTP/1.1\r\n"
                                 "Host: www.yancy.top\r\n"
@@ -13,14 +13,14 @@ void test_request()
     yancy::http::HttpRequestParser parser;
     std::string tmp = test_request_data;
     size_t s = parser.execute(&tmp[0], tmp.size()); //解析Http请求协议
-    SYLAR_LOG_ERROR(g_logger) << "execute rt=" << s
+    YANCY_LOG_ERROR(g_logger) << "execute rt=" << s
         << "has_error=" << parser.hasError()
         << " is_finished=" << parser.isFinished()
         << " total=" << tmp.size()
         << " content_length=" << parser.getContentLength();
     tmp.resize(tmp.size() - s); //将已解析的数据移除
-    SYLAR_LOG_INFO(g_logger) << parser.getData()->toString();
-    SYLAR_LOG_INFO(g_logger) << tmp;
+    YANCY_LOG_INFO(g_logger) << parser.getData()->toString();
+    YANCY_LOG_INFO(g_logger) << tmp;
 }
 
 const char test_response_data[] = "HTTP/1.1 200 OK\r\n"
@@ -43,7 +43,7 @@ void test_response()
     yancy::http::HttpResponseParser parser;
     std::string tmp = test_response_data;
     size_t s = parser.execute(&tmp[0], tmp.size(), true);   //解析HTTP响应协议
-    SYLAR_LOG_ERROR(g_logger) << "execute rt=" << s
+    YANCY_LOG_ERROR(g_logger) << "execute rt=" << s
         << " has_error=" << parser.hasError()
         << " is_finished=" << parser.isFinished()
         << " total=" << tmp.size()
@@ -52,14 +52,14 @@ void test_response()
 
     tmp.resize(tmp.size() - s); //将已解析的数据移除
 
-    SYLAR_LOG_INFO(g_logger) << parser.getData()->toString();
-    SYLAR_LOG_INFO(g_logger) << tmp;
+    YANCY_LOG_INFO(g_logger) << parser.getData()->toString();
+    YANCY_LOG_INFO(g_logger) << tmp;
 }
 
 int main(int argc, char** argv)
 {
     test_request();
-    SYLAR_LOG_INFO(g_logger) << "--------------";
+    YANCY_LOG_INFO(g_logger) << "--------------";
     test_response();
     return 0;
 }

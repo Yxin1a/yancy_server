@@ -2,8 +2,8 @@
 //#define XX(code, name, desc) name = code      返回值是name name=code序号
 //HttpMethod    请求名称枚举name  name名称=num序号
 //HttpStatus    请求名称枚举name  name名称=code序号
-#ifndef __SYLAR_HTTP_HTTP_H__
-#define __SYLAR_HTTP_HTTP_H__
+#ifndef __YANCY_HTTP_HTTP_H__
+#define __YANCY_HTTP_HTTP_H__
 
 #include<memory>
 #include<string>

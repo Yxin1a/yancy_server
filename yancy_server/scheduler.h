@@ -12,8 +12,8 @@
     (*自动调度线程池中的协程切换，还有状态转换*)
 */
 
-#ifndef __SYLAR_SCHEDULER_H__
-#define __SYLAR_SCHEDULER_H__
+#ifndef __YANCY_SCHEDULER_H__
+#define __YANCY_SCHEDULER_H__
 
 #include<memory>
 #include<vector>

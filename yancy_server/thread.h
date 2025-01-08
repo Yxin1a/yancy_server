@@ -2,8 +2,8 @@
 //function————函数指针
 //std::function<void()> cb————cb指向void*类型的函数，cb()来调用指向的函数
 
-#ifndef __SYLAR_THREAD_H__
-#define __SYLAR_THREAD_H__
+#ifndef __YANCY_THREAD_H__
+#define __YANCY_THREAD_H__
 
 #include"mutex.h"
 

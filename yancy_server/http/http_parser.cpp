@@ -10,7 +10,7 @@ namespace yancy
     {
         //全局
 
-        static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+        static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
         //限制请求头部一个字段(一次发送的数据大小)为4K————超出则数据有问题
         static yancy::ConfigVar<uint64_t>::ptr g_http_request_buffer_size =
@@ -86,7 +86,7 @@ namespace yancy
 
             if(m == HttpMethod::INVALID_METHOD) //HTTP请求方法枚举类没有
             {
-                SYLAR_LOG_WARN(g_logger) << "invalid http request method: "
+                YANCY_LOG_WARN(g_logger) << "invalid http request method: "
                     << std::string(at, length);
                 parser->setError(1000);
                 return;
@@ -129,7 +129,7 @@ namespace yancy
             }
             else
             {
-                SYLAR_LOG_WARN(g_logger) << "invalid http request version: "
+                YANCY_LOG_WARN(g_logger) << "invalid http request version: "
                     << std::string(at, length);
                 parser->setError(1001);
                 return;
@@ -153,7 +153,7 @@ namespace yancy
             HttpRequestParser* parser = static_cast<HttpRequestParser*>(data);  //转换成HttpRequestParser  HTTP请求解析类
             if(flen == 0)   //key为0
             {
-                SYLAR_LOG_WARN(g_logger) << "invalid http request field length == 0";
+                YANCY_LOG_WARN(g_logger) << "invalid http request field length == 0";
                 return;
             }
             parser->getData()->setHeader(std::string(field, flen)   //设置HTTP请求的头部参数
@@ -248,7 +248,7 @@ namespace yancy
             }
             else
             {
-                SYLAR_LOG_WARN(g_logger) << "invalid http response version: "
+                YANCY_LOG_WARN(g_logger) << "invalid http response version: "
                     << std::string(at, length);
                 parser->setError(1001);
                 return;
@@ -276,7 +276,7 @@ namespace yancy
             HttpResponseParser* parser = static_cast<HttpResponseParser*>(data);    //转换成HttpResponseParser  Http响应解析类
             if(flen == 0)
             {
-                SYLAR_LOG_WARN(g_logger) << "invalid http response field length == 0";
+                YANCY_LOG_WARN(g_logger) << "invalid http response field length == 0";
                 return;
             }
             parser->getData()->setHeader(std::string(field, flen)   //设置响应头部参数

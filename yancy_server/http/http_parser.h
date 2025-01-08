@@ -1,7 +1,7 @@
 //      HTTP协议解析封装
 //      (消息体不用解析)
-#ifndef __SYLAR_HTTP_PARSER_H__
-#define __SYLAR_HTTP_PARSER_H__
+#ifndef __YANCY_HTTP_PARSER_H__
+#define __YANCY_HTTP_PARSER_H__
 
 #include "http.h"
 #include "http11_parser.h"

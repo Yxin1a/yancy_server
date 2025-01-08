@@ -10,7 +10,7 @@
 namespace yancy
 {
 
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     bool Env::init(int argc, char** argv)   //main函数输入参数解析，获取进程路径(并插入参数)
     {
@@ -45,7 +45,7 @@ namespace yancy
                 }
                 else
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "invalid arg idx=" << i
+                    YANCY_LOG_ERROR(g_logger) << "invalid arg idx=" << i
                         << " val=" << argv[i];
                     return false;
                 }
@@ -59,7 +59,7 @@ namespace yancy
                 }
                 else
                 {
-                    SYLAR_LOG_ERROR(g_logger) << "invalid arg idx=" << i
+                    YANCY_LOG_ERROR(g_logger) << "invalid arg idx=" << i
                         << " val=" << argv[i];
                     return false;
                 }

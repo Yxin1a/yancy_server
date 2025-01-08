@@ -1,6 +1,6 @@
 //  信号量和各种锁的封装
-#ifndef __SYLAR_MUTEX_H__
-#define __SYLAR_MUTEX_H__
+#ifndef __YANCY_MUTEX_H__
+#define __YANCY_MUTEX_H__
 
 #include<thread>
 #include<functional>

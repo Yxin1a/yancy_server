@@ -10,7 +10,7 @@
 namespace yancy
 {
 
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     //重启时间间隔
     static yancy::ConfigVar<uint32_t>::ptr g_daemon_restart_interval
@@ -52,12 +52,12 @@ namespace yancy
                 //子进程中返回
                 ProcessInfoMgr::GetInstance()->main_id = getpid();  //主(子)进程id  getpid()返回当前进程ID
                 ProcessInfoMgr::GetInstance()->main_start_time  = time(0);  //主(子)进程启动时间
-                SYLAR_LOG_INFO(g_logger) << "process start pid=" << getpid();   //
+                YANCY_LOG_INFO(g_logger) << "process start pid=" << getpid();   //
                 return real_start(argc, argv, main_cb);
             }
             else if(pid < 0)    //失败
             {
-                SYLAR_LOG_ERROR(g_logger) << "fork fail return=" << pid
+                YANCY_LOG_ERROR(g_logger) << "fork fail return=" << pid
                     << " errno=" << errno << " errstr=" << strerror(errno);
                 return -1;
             }
@@ -72,18 +72,18 @@ namespace yancy
                 {
                     if(status == 9) //结束
                     {
-                        SYLAR_LOG_INFO(g_logger) << "killed";
+                        YANCY_LOG_INFO(g_logger) << "killed";
                         break;
                     }
                     else    //停止运行(重启)
                     {
-                        SYLAR_LOG_ERROR(g_logger) << "child crash pid=" << pid
+                        YANCY_LOG_ERROR(g_logger) << "child crash pid=" << pid
                             << " status=" << status;
                     }
                 }
                 else    //子进程正常退出
                 {
-                    SYLAR_LOG_INFO(g_logger) << "child finished pid=" << pid;
+                    YANCY_LOG_INFO(g_logger) << "child finished pid=" << pid;
                     break;
                 }
                 ProcessInfoMgr::GetInstance()->restart_count += 1;  //主(子)进程重启的次数

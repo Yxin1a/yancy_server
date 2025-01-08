@@ -16,7 +16,7 @@
 
 namespace yancy
 {
-    yancy::Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+    yancy::Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
     pid_t GetThreadId()     //返回当前线程ID
     {
@@ -40,7 +40,7 @@ namespace yancy
                                                     //参数s是backtrace()返回值。
         if(strings==NULL)
         {
-            SYLAR_LOG_ERROR(g_logger)<<"backtrace_symbols error";
+            YANCY_LOG_ERROR(g_logger)<<"backtrace_symbols error";
             return;
         }
 
@@ -295,7 +295,7 @@ namespace yancy
         in_addr_t localhost = inet_addr("127.0.0.1");
         if(getifaddrs(&ifas)) 
         {
-            SYLAR_LOG_ERROR(g_logger) << "getifaddrs errno=" << errno
+            YANCY_LOG_ERROR(g_logger) << "getifaddrs errno=" << errno
                 << " errstr=" << strerror(errno);
             return localhost;
         }

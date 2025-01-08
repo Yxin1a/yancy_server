@@ -1,12 +1,12 @@
 #include"../yancy_server/yancy_server.h"
 
-yancy::Logger::ptr g_logger=SYLAR_LOG_ROOT();
+yancy::Logger::ptr g_logger=YANCY_LOG_ROOT();
 
 void test_fiber()
 {
     static int s_count=5;   //只用定义一次就行（多定义=第一次定义）
 
-    SYLAR_LOG_INFO(g_logger)<<"test in fiber s_count="<<s_count;
+    YANCY_LOG_INFO(g_logger)<<"test in fiber s_count="<<s_count;
 
     sleep(1);
     if(--s_count>=0)
@@ -17,13 +17,13 @@ void test_fiber()
 
 int main(int argc,char** argv)
 {
-    SYLAR_LOG_INFO(g_logger)<<"main";
+    YANCY_LOG_INFO(g_logger)<<"main";
     yancy::Scheduler sc(3,false,"test");
     sc.start();
     sleep(2);
-    SYLAR_LOG_INFO(g_logger)<<"schedule";
+    YANCY_LOG_INFO(g_logger)<<"schedule";
     sc.schedule(&test_fiber);   //协程队列插入
     sc.stop();
-    SYLAR_LOG_INFO(g_logger)<<"over";
+    YANCY_LOG_INFO(g_logger)<<"over";
     return 0;
 }

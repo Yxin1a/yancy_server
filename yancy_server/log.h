@@ -3,8 +3,8 @@
 //  配置模板控制日志模板
 //(获取yml文件配置 和 默认日志模板配置，根据变更事件来修改日志模板配置————在变更事件里修改)
 
-#ifndef __SYLAR_LOG_H__
-#define __SYLAR_LOG_H__
+#ifndef __YANCY_LOG_H__
+#define __YANCY_LOG_H__
 
 #include<string>
 #include<stdint.h>
@@ -20,55 +20,55 @@
 #include"thread.h"
 
 //使用流式方式将日志级别level的日志写入到logger
-#define SYLAR_LOG_LEVEL(logger,level)\
+#define YANCY_LOG_LEVEL(logger,level)\
     if(logger->getLevel()<=level)\
         yancy::LogEventWrap(yancy::LogEvent::ptr(new yancy::LogEvent(logger,level,\
         __FILE__,__LINE__,0,yancy::GetThreadId(),\
             yancy::GetFiberId(),time(0),yancy::Thread::GetName()))).getSS()
 
 //使用流式方式将日志级别debug的日志写入到logger
-#define SYLAR_LOG_DEBUG(logger) SYLAR_LOG_LEVEL(logger, yancy::LogLevel::DEBUG)
+#define YANCY_LOG_DEBUG(logger) YANCY_LOG_LEVEL(logger, yancy::LogLevel::DEBUG)
 
 //使用流式方式将日志级别info的日志写入到logge
-#define SYLAR_LOG_INFO(logger) SYLAR_LOG_LEVEL(logger, yancy::LogLevel::INFO)
+#define YANCY_LOG_INFO(logger) YANCY_LOG_LEVEL(logger, yancy::LogLevel::INFO)
 
 //使用流式方式将日志级别warn的日志写入到logger
-#define SYLAR_LOG_WARN(logger) SYLAR_LOG_LEVEL(logger, yancy::LogLevel::WARN)
+#define YANCY_LOG_WARN(logger) YANCY_LOG_LEVEL(logger, yancy::LogLevel::WARN)
 
 //使用流式方式将日志级别error的日志写入到logger
-#define SYLAR_LOG_ERROR(logger) SYLAR_LOG_LEVEL(logger, yancy::LogLevel::ERROR)
+#define YANCY_LOG_ERROR(logger) YANCY_LOG_LEVEL(logger, yancy::LogLevel::ERROR)
 
 //使用流式方式将日志级别fatal的日志写入到logger
-#define SYLAR_LOG_FATAL(logger) SYLAR_LOG_LEVEL(logger, yancy::LogLevel::FATAL)
+#define YANCY_LOG_FATAL(logger) YANCY_LOG_LEVEL(logger, yancy::LogLevel::FATAL)
 
 
 //使用格式化方式将日志级别level的日志写入到logger
-#define SYLAR_LOG_FMT_LEVEL(logger, level, fmt, ...) \
+#define YANCY_LOG_FMT_LEVEL(logger, level, fmt, ...) \
     if(logger->getLevel() <= level) \
         yancy::LogEventWrap(yancy::LogEvent::ptr(new yancy::LogEvent(logger, level, \
                         __FILE__,__LINE__, 0, yancy::GetThreadId(),\
                 yancy::GetFiberId(), time(0),yancy::Thread::GetName()))).getEvent()->format(fmt, __VA_ARGS__)
 
 //使用格式化方式将日志级别debug的日志写入到logger
-#define SYLAR_LOG_FMT_DEBUG(logger, fmt, ...) SYLAR_LOG_FMT_LEVEL(logger, yancy::LogLevel::DEBUG, fmt, __VA_ARGS__)
+#define YANCY_LOG_FMT_DEBUG(logger, fmt, ...) YANCY_LOG_FMT_LEVEL(logger, yancy::LogLevel::DEBUG, fmt, __VA_ARGS__)
 
 //使用格式化方式将日志级别info的日志写入到logger
-#define SYLAR_LOG_FMT_INFO(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger, yancy::LogLevel::INFO, fmt, __VA_ARGS__)
+#define YANCY_LOG_FMT_INFO(logger, fmt, ...)  YANCY_LOG_FMT_LEVEL(logger, yancy::LogLevel::INFO, fmt, __VA_ARGS__)
 
 //使用格式化方式将日志级别warn的日志写入到logger
-#define SYLAR_LOG_FMT_WARN(logger, fmt, ...)  SYLAR_LOG_FMT_LEVEL(logger, yancy::LogLevel::WARN, fmt, __VA_ARGS__)
+#define YANCY_LOG_FMT_WARN(logger, fmt, ...)  YANCY_LOG_FMT_LEVEL(logger, yancy::LogLevel::WARN, fmt, __VA_ARGS__)
 
 //使用格式化方式将日志级别error的日志写入到logger
-#define SYLAR_LOG_FMT_ERROR(logger, fmt, ...) SYLAR_LOG_FMT_LEVEL(logger, yancy::LogLevel::ERROR, fmt, __VA_ARGS__)
+#define YANCY_LOG_FMT_ERROR(logger, fmt, ...) YANCY_LOG_FMT_LEVEL(logger, yancy::LogLevel::ERROR, fmt, __VA_ARGS__)
 
 //使用格式化方式将日志级别fatal的日志写入到logger
-#define SYLAR_LOG_FMT_FATAL(logger, fmt, ...) SYLAR_LOG_FMT_LEVEL(logger, yancy::LogLevel::FATAL, fmt, __VA_ARGS__)
+#define YANCY_LOG_FMT_FATAL(logger, fmt, ...) YANCY_LOG_FMT_LEVEL(logger, yancy::LogLevel::FATAL, fmt, __VA_ARGS__)
 
 
 //获取主日志器
-#define SYLAR_LOG_ROOT() yancy::LoggerMgr::GetInstance()->getRoot()
+#define YANCY_LOG_ROOT() yancy::LoggerMgr::GetInstance()->getRoot()
 //获取name的日志器
-#define SYLAR_LOG_NAME(name) yancy::LoggerMgr::GetInstance()->getLogger(name)
+#define YANCY_LOG_NAME(name) yancy::LoggerMgr::GetInstance()->getLogger(name)
 
 
 namespace yancy{   //为了区分和别人代码重命名的问题

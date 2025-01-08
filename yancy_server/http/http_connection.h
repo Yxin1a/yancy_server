@@ -1,7 +1,7 @@
 //  HTTP客户端封装
 //(处理数据的传输)
-#ifndef __SYLAR_HTTP_CONNECTION_H__
-#define __SYLAR_HTTP_CONNECTION_H__
+#ifndef __YANCY_HTTP_CONNECTION_H__
+#define __YANCY_HTTP_CONNECTION_H__
 
 #include"../streams/socket_stream.h"
 #include "http.h"

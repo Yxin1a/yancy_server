@@ -41,12 +41,12 @@ namespace yancy
 
     FiberSemaphore::~FiberSemaphore()
     {
-        SYLAR_ASSERT(m_waiters.empty());
+        YANCY_ASSERT(m_waiters.empty());
     }
 
     bool FiberSemaphore::tryWait()
     {
-        SYLAR_ASSERT(Scheduler::GetThis());
+        YANCY_ASSERT(Scheduler::GetThis());
         {
             MutexType::Lock lock(m_mutex);
             if(m_concurrency > 0u)  //0u   无符号整型 0
@@ -60,7 +60,7 @@ namespace yancy
 
     void FiberSemaphore::wait()
     {
-        SYLAR_ASSERT(Scheduler::GetThis());
+        YANCY_ASSERT(Scheduler::GetThis());
         {
             MutexType::Lock lock(m_mutex);
             if(m_concurrency > 0u)

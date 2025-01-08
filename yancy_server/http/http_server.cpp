@@ -11,7 +11,7 @@ namespace yancy
     namespace http
     {
 
-        static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+        static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
         static yancy::ConfigVar<std::vector<yancy::ServletPathConf>>::ptr g_servlet_conf
             = yancy::Config::Lookup("servlets", std::vector<yancy::ServletPathConf>(), "servlet path conf");
@@ -39,7 +39,7 @@ namespace yancy
                 }
                 if(!dispatch->fun(m_dispatch))
                 {
-                    SYLAR_LOG_ERROR(g_logger)<<"servlet conf error";
+                    YANCY_LOG_ERROR(g_logger)<<"servlet conf error";
                     break;
                 }
             }
@@ -57,13 +57,13 @@ namespace yancy
 
         void HttpServer::handleClient(Socket::ptr client)   //处理新连接的Socket类(处理新连接的客户端数据传输)
         {
-            SYLAR_LOG_DEBUG(g_logger) << "handleClient " << *client;
+            YANCY_LOG_DEBUG(g_logger) << "handleClient " << *client;
             HttpSession::ptr session(new HttpSession(client));
             do {
                 auto req = session->recvRequest();  //接收HTTP请求，并解析HTTP协议请求
                 if(!req)
                 {
-                    SYLAR_LOG_DEBUG(g_logger) << "recv http request fail, errno="
+                    YANCY_LOG_DEBUG(g_logger) << "recv http request fail, errno="
                         << errno << " errstr=" << strerror(errno)
                         << " cliet:" << *client << " keep_alive=" << m_isKeepalive;
                     break;

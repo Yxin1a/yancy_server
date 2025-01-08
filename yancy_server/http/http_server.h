@@ -1,7 +1,7 @@
 //  HTTP服务器封装
 //(处理HTTP服务器与客户端的请求与响应)
-#ifndef __SYLAR_HTTP_HTTP_SERVER_H__
-#define __SYLAR_HTTP_HTTP_SERVER_H__
+#ifndef __YANCY_HTTP_HTTP_SERVER_H__
+#define __YANCY_HTTP_HTTP_SERVER_H__
 
 #include "../tcp_server.h"
 #include "http_session.h"

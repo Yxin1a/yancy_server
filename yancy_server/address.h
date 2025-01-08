@@ -2,8 +2,8 @@
 //(识别IP地址是IPv4,IPv6,Unix那种类型)
 //创建对应的Address(包含端口号，端口号区分用什么协议)
 //Address根据相对应的端口号在应用层协议池中寻找对应的协议
-#ifndef __SYLAR_ADDRESS_H__
-#define __SYLAR_ADDRESS_H__
+#ifndef __YANCY_ADDRESS_H__
+#define __YANCY_ADDRESS_H__
 
 #include <memory>
 #include <string>

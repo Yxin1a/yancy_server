@@ -2,11 +2,11 @@
 //网络字节序<————>主机字节序
 //大端<————>小端
 //1字节 大端和小端都是一样
-#ifndef __SYLAR_ENDIAN_H__
-#define __SYLAR_ENDIAN_H__
+#ifndef __YANCY_ENDIAN_H__
+#define __YANCY_ENDIAN_H__
 
-#define SYLAR_LITTLE_ENDIAN 1   //小端
-#define SYLAR_BIG_ENDIAN 2  //大端
+#define YANCY_LITTLE_ENDIAN 1   //小端
+#define YANCY_BIG_ENDIAN 2  //大端
 
 #include<byteswap.h>    //转换
 #include<stdint.h>
@@ -46,13 +46,13 @@ namespace yancy
     }
 
     #if BYTE_ORDER == BIG_ENDIAN    //判断是不是大端
-    #define SYLAR_BYTE_ORDER SYLAR_BIG_ENDIAN   //是大端
+    #define YANCY_BYTE_ORDER YANCY_BIG_ENDIAN   //是大端
     #else
-    #define SYLAR_BYTE_ORDER SYLAR_LITTLE_ENDIAN    //是小端
+    #define YANCY_BYTE_ORDER YANCY_LITTLE_ENDIAN    //是小端
     #endif
 
 
-    #if SYLAR_BYTE_ORDER == SYLAR_BIG_ENDIAN   //如果是大端 
+    #if YANCY_BYTE_ORDER == YANCY_BIG_ENDIAN   //如果是大端 
 
     /**
      *                  字节序转换

@@ -4,7 +4,7 @@
 #include"../yancy_server/bytearray.h"
 #include"../yancy_server/address.h"
 
-static yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 class EchoServer : public yancy::TcpServer  //TCP例子
 {
@@ -22,7 +22,7 @@ EchoServer::EchoServer(int type)    //初始化
 
 void EchoServer::handleClient(yancy::Socket::ptr client)    //处理新连接的Socket类(处理新连接的客户端数据传输)
 {
-    SYLAR_LOG_INFO(g_logger) << "handleClient " << *client;   
+    YANCY_LOG_INFO(g_logger) << "handleClient " << *client;   
     yancy::ByteArray::ptr ba(new yancy::ByteArray); //二进制数组,提供基础类型的序列化
     while(true)
     {
@@ -33,18 +33,18 @@ void EchoServer::handleClient(yancy::Socket::ptr client)    //处理新连接的
         int rt = client->recv(&iovs[0], iovs.size());   //接受数据(TCP) recv函数已进行序列化
         if(rt == 0) //被关闭
         {
-            SYLAR_LOG_INFO(g_logger) << "client close: " << *client;
+            YANCY_LOG_INFO(g_logger) << "client close: " << *client;
             break;
         }
         else if(rt < 0) //出错
         {
-            SYLAR_LOG_INFO(g_logger) << "client error rt=" << rt
+            YANCY_LOG_INFO(g_logger) << "client error rt=" << rt
                 << " errno=" << errno << " errstr=" << strerror(errno);
             break;
         }
         ba->setPosition(ba->getPosition() + rt);    //重新设置操作位置
         ba->setPosition(0);
-        //SYLAR_LOG_INFO(g_logger) << "recv rt=" << rt << " data=" << std::string((char*)iovs[0].iov_base, rt);
+        //YANCY_LOG_INFO(g_logger) << "recv rt=" << rt << " data=" << std::string((char*)iovs[0].iov_base, rt);
         if(m_type == 1) //文本
         {//text 
             std::cout << ba->toString();// << std::endl;
@@ -61,7 +61,7 @@ int type = 1;
 
 void run()
 {
-    SYLAR_LOG_INFO(g_logger) << "server type=" << type;
+    YANCY_LOG_INFO(g_logger) << "server type=" << type;
     EchoServer::ptr es(new EchoServer(type));
     auto addr = yancy::Address::LookupAny("0.0.0.0:8020");  //通过host地址返回对应条件的任意Address
     while(!es->bind(addr))  //绑定地址
@@ -75,7 +75,7 @@ int main(int argc,char** argv)
 {
     if(argc < 2)
     {
-        SYLAR_LOG_INFO(g_logger) << "used as[" << argv[0] << " -t] or [" << argv[0] << " -b]";
+        YANCY_LOG_INFO(g_logger) << "used as[" << argv[0] << " -t] or [" << argv[0] << " -b]";
         return 0;
     }
 

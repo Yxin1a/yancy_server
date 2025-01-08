@@ -3,18 +3,18 @@
 #include"../yancy_server/yancy_server.h"
 #include"../yancy_server/iomanager.h"
 
-static yancy::Logger::ptr g_logger=SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger=YANCY_LOG_ROOT();
 
 void test_socket()
 {
     yancy::IPAddress::ptr addr=yancy::Address::LookupAnyIPAddress("www.baidu.com"); //域名返回对应条件的任意IPAddress
     if(addr)
     {
-        SYLAR_LOG_INFO(g_logger)<<"get address:"<<addr->toString();
+        YANCY_LOG_INFO(g_logger)<<"get address:"<<addr->toString();
     }
     else
     {
-        SYLAR_LOG_INFO(g_logger)<<"get address fail";
+        YANCY_LOG_INFO(g_logger)<<"get address fail";
         return;
     }
     yancy::Socket::ptr sock=yancy::Socket::CreateTCP(addr); //创建TCP Socket(满足地址类型)
@@ -22,18 +22,18 @@ void test_socket()
     
     if (!sock->connect(addr))
     {
-        SYLAR_LOG_INFO(g_logger)<<"connect "<<addr->toString()<<" fail";
+        YANCY_LOG_INFO(g_logger)<<"connect "<<addr->toString()<<" fail";
         return;
     }
     else
     {
-        SYLAR_LOG_INFO(g_logger)<<"connect "<<addr->toString()<<" fail";    //连接成功
+        YANCY_LOG_INFO(g_logger)<<"connect "<<addr->toString()<<" fail";    //连接成功
     }
     const char buff[]="GET / HTTP/1.0\r\n\r\n";
     int rt=sock->send(buff,sizeof(buff));   //发送请求
     if(rt<=0)
     {
-        SYLAR_LOG_INFO(g_logger)<<"send fail rt="<<rt;
+        YANCY_LOG_INFO(g_logger)<<"send fail rt="<<rt;
         return;
     }
 
@@ -43,12 +43,12 @@ void test_socket()
 
     if(rt<=0)
     {
-        SYLAR_LOG_INFO(g_logger)<<"recv fail rt="<<rt;
+        YANCY_LOG_INFO(g_logger)<<"recv fail rt="<<rt;
         return;
     }
 
     buffs.resize(rt);
-    SYLAR_LOG_INFO(g_logger)<<buffs;
+    YANCY_LOG_INFO(g_logger)<<buffs;
 }
 
 int main(int argc,char** argv)

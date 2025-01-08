@@ -9,8 +9,8 @@
 //iovec数组与内存池绑定，通过IOmanaryer来写入读取数据fenwei
 
 //内存池分为读内存池、写内存池(但是不存在读写内存池,但是可以读写内存池转换)————可从m_position看出
-#ifndef __SYLAR_BYTEARRAY_H__
-#define __SYLAR_BYTEARRAY_H__
+#ifndef __YANCY_BYTEARRAY_H__
+#define __YANCY_BYTEARRAY_H__
 
 #include<memory>
 #include<string>

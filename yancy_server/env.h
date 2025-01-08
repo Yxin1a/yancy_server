@@ -8,8 +8,8 @@
 //             -file (-参数名称2) 
 //              xxxx (参数值)
 //              ...
-#ifndef __SYLAR_ENV_H__
-#define __SYLAR_ENV_H__
+#ifndef __YANCY_ENV_H__
+#define __YANCY_ENV_H__
 
 #include "yancy_server/singLeton.h"
 #include "yancy_server/thread.h"

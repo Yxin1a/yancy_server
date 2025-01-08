@@ -1,8 +1,8 @@
 //  单例模式封装(饿汉式)
 //(类对象全局)
 
-#ifndef __SYLAR_SINGLETON_H__
-#define __SYLAR_SINGLETON_H__
+#ifndef __YANCY_SINGLETON_H__
+#define __YANCY_SINGLETON_H__
 #include<memory>
 
 namespace yancy

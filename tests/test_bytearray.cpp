@@ -4,7 +4,7 @@
 #include"../yancy_server/bytearray.h"
 #include"../yancy_server/yancy_server.h"
 
-static yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 void test()
 {
@@ -25,10 +25,10 @@ void test()
     for(size_t i=0;i<vec.size();++i) \
     { \
         type v=ba->read_fun(); \
-        SYLAR_ASSERT(v==vec[i]); \
+        YANCY_ASSERT(v==vec[i]); \
     } \
-    SYLAR_ASSERT(ba->getReadSize()==0); \
-    SYLAR_LOG_INFO(g_logger) << #write_fun "/" #read_fun \
+    YANCY_ASSERT(ba->getReadSize()==0); \
+    YANCY_LOG_INFO(g_logger) << #write_fun "/" #read_fun \
                     " (" #type " ) len=" << len \
                     << " base_len=" << base_len \
                     << " size=" << ba->getSize(); \
@@ -70,21 +70,21 @@ void test()
     for(size_t i=0;i<vec.size();++i) \
     { \
         type v=ba->read_fun(); \
-        SYLAR_ASSERT(v==vec[i]); \
+        YANCY_ASSERT(v==vec[i]); \
     } \
-    SYLAR_ASSERT(ba->getReadSize()==0); \
-    SYLAR_LOG_INFO(g_logger) << #write_fun "/" #read_fun \
+    YANCY_ASSERT(ba->getReadSize()==0); \
+    YANCY_LOG_INFO(g_logger) << #write_fun "/" #read_fun \
                     " (" #type " ) len=" << len \
                     << " base_len=" << base_len \
                     << " size=" << ba->getSize(); \
     ba->setPosition(0); \
-    SYLAR_ASSERT(ba->writeToFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
+    YANCY_ASSERT(ba->writeToFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
     yancy::ByteArray::ptr ba2(new yancy::ByteArray(base_len * 2)); \
-    SYLAR_ASSERT(ba2->readFromFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
+    YANCY_ASSERT(ba2->readFromFile("/tmp/" #type "_" #len "-" #read_fun ".dat")); \
     ba2->setPosition(0); \
-    SYLAR_ASSERT(ba->toString() == ba2->toString()); \
-    SYLAR_ASSERT(ba->getPosition() == 0); \
-    SYLAR_ASSERT(ba2->getPosition() == 0); \
+    YANCY_ASSERT(ba->toString() == ba2->toString()); \
+    YANCY_ASSERT(ba->getPosition() == 0); \
+    YANCY_ASSERT(ba2->getPosition() == 0); \
 }
     XX(int8_t,  100, writeFint8, readFint8, 1);
     XX(uint8_t, 100, writeFuint8, readFuint8, 1);

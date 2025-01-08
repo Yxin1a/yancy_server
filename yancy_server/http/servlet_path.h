@@ -1,5 +1,5 @@
-#ifndef __SYLAR_HTTP_SERVLET_PATH_H__
-#define __SYLAR_HTTP_SERVLET_PATH_H__
+#ifndef __YANCY_HTTP_SERVLET_PATH_H__
+#define __YANCY_HTTP_SERVLET_PATH_H__
 
 #include<memory>
 #include"../config.h"

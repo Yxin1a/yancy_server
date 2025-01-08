@@ -7,8 +7,8 @@
     创建协程(无执行函数、有执行函数)
     //协程封装————协程切换是切换到最近创建的协程
 */
-#ifndef __SYLAR_FIBER_H__
-#define __SYLAR_FIBER_H__
+#ifndef __YANCY_FIBER_H__
+#define __YANCY_FIBER_H__
 
 #include<memory>
 #include<functional>

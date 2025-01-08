@@ -1,8 +1,8 @@
 //  基于Epoll的IO协程调度器
 //继承协程调度器，拥有协程调度器的功能
 //通过定时器管理，来管理定时器(IO协程调度器有自己的等待时间，和定时器没联系)
-#ifndef __SYLAR_IOMANAGER_H__
-#define __SYLAR_IOMANAGER_H__
+#ifndef __YANCY_IOMANAGER_H__
+#define __YANCY_IOMANAGER_H__
 
 #include"scheduler.h"
 #include"timer.h"

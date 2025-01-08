@@ -3,8 +3,8 @@
 //  server:accept,socket
 //  解析HTTP请求协议，并转发响应协议
 //(响应的消息体内容自己决定)
-#ifndef __SYLAR_HTTP_SESSION_H__
-#define __SYLAR_HTTP_SESSION_H__
+#ifndef __YANCY_HTTP_SESSION_H__
+#define __YANCY_HTTP_SESSION_H__
 
 #include "../streams/socket_stream.h"
 #include "http.h"

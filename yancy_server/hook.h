@@ -2,8 +2,8 @@
 //某些特殊时刻，系统内部预先设置好的函数，当系统周期到达指定时刻 会自动执行该'钩子'
 //hook_sleep能实现和sleep的效果
 //hook_sleep延迟时间是不会占用线程的时间，效率大大加大
-#ifndef __SYLAR_HOOK_H__
-#define __SYLAR_HOOK_H__
+#ifndef __YANCY_HOOK_H__
+#define __YANCY_HOOK_H__
 
 //socket相关(socket、connect客户连接服务、accept服务接受客户、close)
 //io相关(read、readv、recv、recvfrom、recvmsg、

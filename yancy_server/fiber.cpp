@@ -9,7 +9,7 @@
 
 namespace yancy
 {
-    static Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+    static Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
     //std::atomic原子操作：更小的代码片段，并且该片段必定是连续执行的，不可分割。
     //                    保护一个变量。
@@ -48,12 +48,12 @@ namespace yancy
 
         if(getcontext(&m_ctx))  //getcontext() 获取当前上下文，并将当前的上下文保存到m_ctx(协程库)中
         {
-            SYLAR_ASSERT2(false,"getcontext");
+            YANCY_ASSERT2(false,"getcontext");
         }
 
         ++s_fiber_count;
 
-        SYLAR_LOG_DEBUG(g_logger)<<"Fiber::Fiber";
+        YANCY_LOG_DEBUG(g_logger)<<"Fiber::Fiber";
     }
 
     Fiber::Fiber(std::function<void()> cb,size_t stacksize,bool use_caller) //初始化——并创建子协程 和 初始化协程
@@ -66,7 +66,7 @@ namespace yancy
         m_stack=StackAllocator::Alloc(m_stacksize);     //创建协程运行的栈
         if(getcontext(&m_ctx))  //getcontext() 获取当前上下文，并将当前的上下文保存到m_ctx(协程库)中
         {
-            SYLAR_ASSERT2(false,"getcontext");
+            YANCY_ASSERT2(false,"getcontext");
         }
 
         m_ctx.uc_link=nullptr;              //uc_link上下文
@@ -84,7 +84,7 @@ namespace yancy
             makecontext(&m_ctx,&Fiber::CallerMainFunc,0); //makecontext() 创建一个新的上下文。
         }
 
-        SYLAR_LOG_DEBUG(g_logger)<<"Fiber::Fiber id="<<m_id;
+        YANCY_LOG_DEBUG(g_logger)<<"Fiber::Fiber id="<<m_id;
     }
 
     Fiber::~Fiber()   //释放协程运行的栈——运行协程置为空
@@ -92,14 +92,14 @@ namespace yancy
         --s_fiber_count;
         if(m_stack)
         {
-            SYLAR_ASSERT(m_state==TERM || m_state==EXCEPT || m_state==INIT);
+            YANCY_ASSERT(m_state==TERM || m_state==EXCEPT || m_state==INIT);
 
             StackAllocator::Dealloc(m_stack,m_stacksize);   //释放协程运行的栈
         }
         else
         {
-            SYLAR_ASSERT(!m_cb);
-            SYLAR_ASSERT(m_state==EXEC);
+            YANCY_ASSERT(!m_cb);
+            YANCY_ASSERT(m_state==EXEC);
 
             Fiber* cur=t_fiber;
             if(cur==this)
@@ -107,18 +107,18 @@ namespace yancy
                 SetThis(nullptr);
             }
         }
-        SYLAR_LOG_DEBUG(g_logger)<<"Fiber::~Fiber id="<<m_id;
+        YANCY_LOG_DEBUG(g_logger)<<"Fiber::~Fiber id="<<m_id;
     }
 
     void Fiber::reset(std::function<void()> cb)   //重置协程执行函数,并设置状态(协程结束后，栈空间还没有释放，利用该栈执行新的协程)
     {
-        SYLAR_ASSERT(m_stack);
-        SYLAR_ASSERT(m_state==TERM || m_state==EXCEPT || m_state==INIT);
+        YANCY_ASSERT(m_stack);
+        YANCY_ASSERT(m_state==TERM || m_state==EXCEPT || m_state==INIT);
 
         m_cb=cb;
         if(getcontext(&m_ctx))  //getcontext() 获取当前上下文，并将当前的上下文保存到m_ctx(协程库)中
         {
-            SYLAR_ASSERT2(false,"getcontext");
+            YANCY_ASSERT2(false,"getcontext");
         }
 
         m_ctx.uc_link=nullptr;              //uc_link上下文
@@ -135,13 +135,13 @@ namespace yancy
     void Fiber::swapIn()  //将当前协程切换到运行状态,并将主协程切换到后台(执行的是协程调度器的调度协程)
     {
         SetThis(this);  //回到当前协程
-        SYLAR_ASSERT(m_state!=EXEC);
+        YANCY_ASSERT(m_state!=EXEC);
         m_state=EXEC;
 
         if(swapcontext(&Scheduler::GetMainFiber()->m_ctx,&m_ctx))   //切换上下文  t_threadFiber->m_ctx——切换——>m_ctx
                                                         //原理：保存当前上下文到oucp结构体中，然后激活upc上下文。 
         {//主协程切换到子协程是切换到最近创建的子协程
-            SYLAR_ASSERT2(false,"swapcontext");
+            YANCY_ASSERT2(false,"swapcontext");
         }
     }
 
@@ -151,7 +151,7 @@ namespace yancy
         m_state=EXEC;
         if(swapcontext(&t_threadFiber->m_ctx,&m_ctx))
         {//主协程切换到子协程是切换到最近创建的子协程
-            SYLAR_ASSERT2(false,"swapcontext");
+            YANCY_ASSERT2(false,"swapcontext");
         }
     }
 
@@ -162,7 +162,7 @@ namespace yancy
         if(swapcontext(&m_ctx,&Scheduler::GetMainFiber()->m_ctx))   //切换上下文  m_ctx——切换——>t_threadFiber->m_ctx
                                                         //原理：保存当前上下文到oucp结构体中，然后激活upc上下文。 
         {//主协程切换到子协程是切换到最近创建的子协程
-            SYLAR_ASSERT2(false,"swapcontext");
+            YANCY_ASSERT2(false,"swapcontext");
         }
     }
 
@@ -171,7 +171,7 @@ namespace yancy
         SetThis(t_threadFiber.get());
         if(swapcontext(&m_ctx,&t_threadFiber->m_ctx))
         {//主协程切换到子协程是切换到最近创建的子协程
-            SYLAR_ASSERT2(false,"swapcontext");
+            YANCY_ASSERT2(false,"swapcontext");
         }
     }
 
@@ -189,7 +189,7 @@ namespace yancy
 
         Fiber::ptr main_fiber(new Fiber);   //创建新的主协程,并回到新创建的主协程
         
-        SYLAR_ASSERT(t_fiber==main_fiber.get());    //判断当前协程是否是主协程
+        YANCY_ASSERT(t_fiber==main_fiber.get());    //判断当前协程是否是主协程
         t_threadFiber=main_fiber;
         return t_fiber->shared_from_this();
     }
@@ -216,7 +216,7 @@ namespace yancy
     void Fiber::MainFunc()  //执行协程执行函数(执行完成返回到线程主协程)
     {
         Fiber::ptr cur=GetThis();   //共享指针+1
-        SYLAR_ASSERT(cur);
+        YANCY_ASSERT(cur);
         try     //可能出现异常的代码
         {
             cur->m_cb();    //执行协程中的函数
@@ -226,7 +226,7 @@ namespace yancy
         catch(std::exception& ex)   //异常处理
         {
             cur->m_state=EXCEPT;
-            SYLAR_LOG_ERROR(g_logger)<<"Fiber Except: "<<ex.what()
+            YANCY_LOG_ERROR(g_logger)<<"Fiber Except: "<<ex.what()
                 <<" fiber_id="<<cur->getId()
                 <<std::endl
                 <<yancy::BacktraceToString();
@@ -234,7 +234,7 @@ namespace yancy
         catch(...)  //异常处理
         {
             cur->m_state=EXCEPT;
-            SYLAR_LOG_ERROR(g_logger)<<"Fiber Except"
+            YANCY_LOG_ERROR(g_logger)<<"Fiber Except"
                 <<" fiber_id="<<cur->getId()
                 <<std::endl
                 <<yancy::BacktraceToString();
@@ -244,13 +244,13 @@ namespace yancy
         cur.reset();    //释放cur(共享指针-1)
         raw_ptr->swapOut(); //切换回主协程——释放主协程
 
-        SYLAR_ASSERT2(false,"never reach fiber_id="+std::to_string(raw_ptr->getId()));
+        YANCY_ASSERT2(false,"never reach fiber_id="+std::to_string(raw_ptr->getId()));
     }
     
     void Fiber::CallerMainFunc()    //执行协程执行函数(执行完成返回到线程调度协程)
     {
         Fiber::ptr cur=GetThis();   //共享指针+1
-        SYLAR_ASSERT(cur);
+        YANCY_ASSERT(cur);
         try     //可能出现异常的代码
         {
             cur->m_cb();    //执行协程中的函数
@@ -260,7 +260,7 @@ namespace yancy
         catch(std::exception& ex)   //异常处理
         {
             cur->m_state=EXCEPT;
-            SYLAR_LOG_ERROR(g_logger)<<"Fiber Except: "<<ex.what()
+            YANCY_LOG_ERROR(g_logger)<<"Fiber Except: "<<ex.what()
                 <<" fiber_id="<<cur->getId()
                 <<std::endl
                 <<yancy::BacktraceToString();
@@ -268,7 +268,7 @@ namespace yancy
         catch(...)  //异常处理
         {
             cur->m_state=EXCEPT;
-            SYLAR_LOG_ERROR(g_logger)<<"Fiber Except"
+            YANCY_LOG_ERROR(g_logger)<<"Fiber Except"
                 <<" fiber_id="<<cur->getId()
                 <<std::endl
                 <<yancy::BacktraceToString();
@@ -278,7 +278,7 @@ namespace yancy
         cur.reset();    //释放cur(共享指针-1)
         raw_ptr->back(); //切换回主协程——释放主协程
 
-        SYLAR_ASSERT2(false,"never reach fiber_id="+std::to_string(raw_ptr->getId()));
+        YANCY_ASSERT2(false,"never reach fiber_id="+std::to_string(raw_ptr->getId()));
     }
 
     uint64_t Fiber::GetFiberId()   //获取当前协程的id

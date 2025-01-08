@@ -16,7 +16,7 @@
 
 namespace yancy
 {
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 
     //Config::ConfigVarMap Config::s_datas;   //所有的配置项(是ConfigVarMap类型————map字典类型)
 
@@ -38,7 +38,7 @@ namespace yancy
     {
         if(prefix.find_first_not_of("abcdefghikjlmnopqrstuvwxyz._012345678")!= std::string::npos)   //find_first_not_of()搜索与其参数中指定的任何字符不匹配的第一个字符
         {
-            SYLAR_LOG_ERROR(SYLAR_LOG_ROOT()) << "Config invalid name: " << prefix << " : " << node;
+            YANCY_LOG_ERROR(YANCY_LOG_ROOT()) << "Config invalid name: " << prefix << " : " << node;
             return;
         }
         output.push_back(std::make_pair(prefix, node));
@@ -108,12 +108,12 @@ namespace yancy
             {
                 YAML::Node root = YAML::LoadFile(i);    //加载i的(yml)文件
                 LoadFromYaml(root);
-                SYLAR_LOG_INFO(g_logger) << "LoadConfFile file="
+                YANCY_LOG_INFO(g_logger) << "LoadConfFile file="
                     << i << " ok";
             }
             catch (...) //有问题
             {
-                SYLAR_LOG_ERROR(g_logger) << "LoadConfFile file="
+                YANCY_LOG_ERROR(g_logger) << "LoadConfFile file="
                     << i << " failed";
             }
         }

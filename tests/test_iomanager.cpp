@@ -8,13 +8,13 @@
 #include<sys/epoll.h>
 #include<iostream>
 
-yancy::Logger::ptr g_logger=SYLAR_LOG_ROOT();
+yancy::Logger::ptr g_logger=YANCY_LOG_ROOT();
 
 int sock=0;
 
 void test_fiber()
 {
-    SYLAR_LOG_INFO(g_logger)<<"test_fiber sock="<<sock;
+    YANCY_LOG_INFO(g_logger)<<"test_fiber sock="<<sock;
     
     //socket
     sock=socket(AF_INET,SOCK_STREAM,0); //创建socket
@@ -30,22 +30,22 @@ void test_fiber()
     {}
     else if(errno==EINPROGRESS)     //绑定失败
     {
-        SYLAR_LOG_INFO(g_logger)<<"add event errno="<<errno<<" "<<strerror(errno);
+        YANCY_LOG_INFO(g_logger)<<"add event errno="<<errno<<" "<<strerror(errno);
 
         yancy::IOManager::GetThis()->addEvent(sock,yancy::IOManager::READ,[]()
         {
-            SYLAR_LOG_INFO(g_logger)<<"read callback";
+            YANCY_LOG_INFO(g_logger)<<"read callback";
         });
         yancy::IOManager::GetThis()->addEvent(sock,yancy::IOManager::WRITE,[]() 
         {
-            SYLAR_LOG_INFO(g_logger)<<"write callback";
+            YANCY_LOG_INFO(g_logger)<<"write callback";
             yancy::IOManager::GetThis()->cancelEvent(sock,yancy::IOManager::READ);
             close(sock);
         });
     }
     else
     {
-        SYLAR_LOG_INFO(g_logger)<<"else "<<errno<<" "<<strerror(errno);
+        YANCY_LOG_INFO(g_logger)<<"else "<<errno<<" "<<strerror(errno);
     }
 }
 
@@ -64,7 +64,7 @@ void test_timer()   //加定时器
     iom.schedule(&test_fiber);
     s_timer=iom.addTimer(1000,[](){
         static int i=0;
-        SYLAR_LOG_INFO(g_logger)<<"hello timer i="<<i;    //[实参](){SYLAR_LOG_INFO(g_logger)<<"hello timer";}是function<void ()>对应的实参
+        YANCY_LOG_INFO(g_logger)<<"hello timer i="<<i;    //[实参](){YANCY_LOG_INFO(g_logger)<<"hello timer";}是function<void ()>对应的实参
         if(++i==3)
         {
             s_timer->reset(2000,true);

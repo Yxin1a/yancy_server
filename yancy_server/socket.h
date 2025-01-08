@@ -18,8 +18,8 @@
 */
 
 
-#ifndef __SYLAR_SOCKET_H__
-#define __SYLAR_SOCKET_H__
+#ifndef __YANCY_SOCKET_H__
+#define __YANCY_SOCKET_H__
 
 #include<memory>
 #include<netinet/tcp.h>    //TCP_NODELAY不使用Nagle算法

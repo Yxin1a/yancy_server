@@ -22,12 +22,12 @@ int main(int argc,char ** argv)
     // logger->log(yancy::LogLevel::DEBUG,event);  //将数据给日志器
     std::cout<<"hello yancy log"<<std::endl;
 
-    SYLAR_LOG_INFO(logger)<<"test macro";
-    SYLAR_LOG_ERROR(logger)<<"test error";
+    YANCY_LOG_INFO(logger)<<"test macro";
+    YANCY_LOG_ERROR(logger)<<"test error";
 
-    SYLAR_LOG_FMT_ERROR(logger,"test macro fmt error %s","aa");
+    YANCY_LOG_FMT_ERROR(logger,"test macro fmt error %s","aa");
 
     auto l=yancy::LoggerMgr::GetInstance()->getLogger("XX"); 
-    SYLAR_LOG_INFO(l)<<"XXX";
+    YANCY_LOG_INFO(l)<<"XXX";
     return 0;
 }

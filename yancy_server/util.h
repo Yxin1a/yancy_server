@@ -1,7 +1,7 @@
 //  常用的工具函数
 
-#ifndef __SYLAR_UTIL_H__
-#define __SYLAR_UTIL_H__
+#ifndef __YANCY_UTIL_H__
+#define __YANCY_UTIL_H__
 
 #include <cxxabi.h>
 #include <pthread.h>

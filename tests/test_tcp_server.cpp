@@ -1,6 +1,6 @@
 #include"../yancy_server/tcp_server.h"
 
-yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 void run()
 {

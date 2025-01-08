@@ -6,7 +6,7 @@
 //#include "yancy-master/streams/zlib_stream.h"
 #include <fstream>
 
-static yancy::Logger::ptr g_logger = SYLAR_LOG_ROOT();
+static yancy::Logger::ptr g_logger = YANCY_LOG_ROOT();
 
 void test_pool()
 {
@@ -15,7 +15,7 @@ void test_pool()
 
     yancy::IOManager::GetThis()->addTimer(1000, [pool](){
             auto r = pool->doGet("/", 300); //发送HTTP的GET请求(字符串uri)
-            SYLAR_LOG_INFO(g_logger) << r->toString();
+            YANCY_LOG_INFO(g_logger) << r->toString();
     }, true);
 }
 
@@ -24,7 +24,7 @@ void run()
     yancy::Address::ptr addr = yancy::Address::LookupAnyIPAddress("www.yancy.top:80");  //通过host地址返回对应条件的任意IPAddress
     if(!addr)
     {
-        SYLAR_LOG_INFO(g_logger) << "get addr error";
+        YANCY_LOG_INFO(g_logger) << "get addr error";
         return;
     }
 
@@ -32,7 +32,7 @@ void run()
     bool rt = sock->connect(addr);  //客户端连接服务器地址
     if(!rt)
     {
-        SYLAR_LOG_INFO(g_logger) << "connect " << *addr << " failed";
+        YANCY_LOG_INFO(g_logger) << "connect " << *addr << " failed";
         return;
     }
 
@@ -40,7 +40,7 @@ void run()
     yancy::http::HttpRequest::ptr req(new yancy::http::HttpRequest);    //HTTP请求结构体
     req->setPath("/blog/"); //设置HTTP请求的路径
     req->setHeader("host", "www.yancy.top");    //设置HTTP请求的头部参数
-    SYLAR_LOG_INFO(g_logger) << "req:" << std::endl
+    YANCY_LOG_INFO(g_logger) << "req:" << std::endl
         << *req;
 
     conn->sendRequest(req); //发送HTTP请求
@@ -48,23 +48,23 @@ void run()
 
     if(!rsp)
     {
-        SYLAR_LOG_INFO(g_logger) << "recv response error";
+        YANCY_LOG_INFO(g_logger) << "recv response error";
         return;
     }
-    SYLAR_LOG_INFO(g_logger) << "rsp:" << std::endl
+    YANCY_LOG_INFO(g_logger) << "rsp:" << std::endl
         << *rsp;
 
     std::ofstream ofs("rsp.dat");
     ofs << *rsp;
 
-    SYLAR_LOG_INFO(g_logger) << "=========================";
+    YANCY_LOG_INFO(g_logger) << "=========================";
 
     auto r = yancy::http::HttpConnection::DoGet("http://www.yancy.top/blog/", 300); //发送HTTP的GET请求(字符串uri)
-    SYLAR_LOG_INFO(g_logger) << "result=" << r->result
+    YANCY_LOG_INFO(g_logger) << "result=" << r->result
         << " error=" << r->error
         << " rsp=" << (r->response ? r->response->toString() : "");
 
-    SYLAR_LOG_INFO(g_logger) << "=========================";
+    YANCY_LOG_INFO(g_logger) << "=========================";
     test_pool();
 }
 
@@ -75,7 +75,7 @@ void run()
 //                         {"Connection", "keep-alive"},
 //                         {"User-Agent", "curl/7.29.0"}
 //             });
-//     SYLAR_LOG_INFO(g_logger) << "result=" << r->result
+//     YANCY_LOG_INFO(g_logger) << "result=" << r->result
 //         << " error=" << r->error
 //         << " rsp=" << (r->response ? r->response->toString() : "");
 
@@ -88,7 +88,7 @@ void run()
 //                         {"Accept-Encoding", "gzip, deflate, br"},
 //                         {"User-Agent", "curl/7.29.0"}
 //                     });
-//             SYLAR_LOG_INFO(g_logger) << r->toString();
+//             YANCY_LOG_INFO(g_logger) << r->toString();
 //     }, true);
 // }
 

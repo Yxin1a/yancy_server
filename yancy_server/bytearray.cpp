@@ -10,7 +10,7 @@
 namespace yancy
 {
 
-    static yancy::Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
     //bytearray
     //Node
@@ -39,7 +39,7 @@ namespace yancy
         ,m_position(0)
         ,m_capacity(base_size)
         ,m_size(0)
-        ,m_endian(SYLAR_BIG_ENDIAN) //大端
+        ,m_endian(YANCY_BIG_ENDIAN) //大端
         ,m_root(new Node(base_size))
         ,m_cur(m_root)
     {}
@@ -71,7 +71,7 @@ namespace yancy
 
     void ByteArray::writeFint16 (int16_t value) //写入固定长度int16_t类型的数据(大端/小端)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -80,7 +80,7 @@ namespace yancy
 
     void ByteArray::writeFuint16(uint16_t value)    //写入固定长度uint16_t类型的数据(大端/小端)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -89,7 +89,7 @@ namespace yancy
 
     void ByteArray::writeFint32 (int32_t value)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -98,7 +98,7 @@ namespace yancy
 
     void ByteArray::writeFuint32(uint32_t value)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -107,7 +107,7 @@ namespace yancy
 
     void ByteArray::writeFint64 (int64_t value)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -116,7 +116,7 @@ namespace yancy
 
     void ByteArray::writeFuint64(uint64_t value)
     {
-        if(m_endian != SYLAR_BYTE_ORDER)    //不是小端
+        if(m_endian != YANCY_BYTE_ORDER)    //不是小端
         {
             value = byteswap(value);    //字节序转化
         }
@@ -263,7 +263,7 @@ namespace yancy
 #define XX(type) \
     type v; \
     read(&v, sizeof(v)); \
-    if(m_endian == SYLAR_BYTE_ORDER)    \
+    if(m_endian == YANCY_BYTE_ORDER)    \
     { \
         return v; \
     }   \
@@ -583,7 +583,7 @@ namespace yancy
         ofs.open(name, std::ios::trunc | std::ios::binary); //trunc如果文件存在先删除再创建     binary二进制方式
         if(!ofs)    //打开失败
         {
-            SYLAR_LOG_ERROR(g_logger) << "writeToFile name=" << name
+            YANCY_LOG_ERROR(g_logger) << "writeToFile name=" << name
                 << " error , errno=" << errno << " errstr=" << strerror(errno);
             return false;
         }
@@ -611,7 +611,7 @@ namespace yancy
         ifs.open(name, std::ios::binary);   //binary二进制方式
         if(!ifs)    //打开失败
         {
-            SYLAR_LOG_ERROR(g_logger) << "readFromFile name=" << name
+            YANCY_LOG_ERROR(g_logger) << "readFromFile name=" << name
                 << " error, errno=" << errno << " errstr=" << strerror(errno);
             return false;
         }
@@ -627,18 +627,18 @@ namespace yancy
 
     bool ByteArray::isLittleEndian() const    //是否是小端
     {
-        return m_endian == SYLAR_LITTLE_ENDIAN; //小端
+        return m_endian == YANCY_LITTLE_ENDIAN; //小端
     }
 
     void ByteArray::setIsLittleEndian(bool val)   //是否设置为小端
     {
         if(val)
         {
-            m_endian = SYLAR_LITTLE_ENDIAN; //小端
+            m_endian = YANCY_LITTLE_ENDIAN; //小端
         }
         else
         {
-            m_endian = SYLAR_BIG_ENDIAN;    //大端
+            m_endian = YANCY_BIG_ENDIAN;    //大端
         }
     }
 

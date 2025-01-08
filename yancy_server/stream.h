@@ -2,8 +2,8 @@
 //父类的虚函数实现是默认实现
 
 //  服务器——>内存池(缓存)<——socket——>内存池(缓存)——>客户端
-#ifndef __SYLAR_STREAM_H__
-#define __SYLAR_STREAM_H__
+#ifndef __YANCY_STREAM_H__
+#define __YANCY_STREAM_H__
 
 #include <memory>
 #include "bytearray.h"

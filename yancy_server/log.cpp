@@ -837,7 +837,7 @@ namespace yancy
         {
             g_log_defines->addListener([](const std::set<LogDefine>& old_value,const std::set<LogDefine>& new_value)
             {
-                SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"on_logger_conf_changed";
+                YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"on_logger_conf_changed";
                 /*新增————新的有，旧的没有
                 修改————新旧都有，但是不一样
                 删除————旧的有，新的没有*/
@@ -847,12 +847,12 @@ namespace yancy
                     yancy::Logger::ptr logger;
                     if(it==old_value.end())
                     {//新增的logger
-                        logger=SYLAR_LOG_NAME(i.name);   //搜索要修改的logger
+                        logger=YANCY_LOG_NAME(i.name);   //搜索要修改的logger
                     }else
                     {
                         if(!(i==*it))   //LogDefine仿函数
                         {//修改的logger
-                            logger=SYLAR_LOG_NAME(i.name);   //搜索要修改的logger
+                            logger=YANCY_LOG_NAME(i.name);   //搜索要修改的logger
                         }else
                         {
                             continue;
@@ -896,7 +896,7 @@ namespace yancy
                     auto it=new_value.find(i);
                     if(it==new_value.end())
                     {//删除的logger————不是真删除，相当于删除
-                        auto logger=SYLAR_LOG_NAME(i.name); 
+                        auto logger=YANCY_LOG_NAME(i.name); 
                         logger->setLevel((LogLevel::Level)100); //设置很高的等级
                         logger->clearAppenders();
                     }

@@ -2,8 +2,8 @@
 //(通过路径来匹配服务器已存储Servlet(路径)，①匹配到了返回Servlet相对应的响应协议消息体(正文)————服务器中的html等文件，
 //                                  ②匹配不到返回404 NotFoundServlet，访问错误)
 //(虚拟接口)
-#ifndef __SYLAR_HTTP_SERVLET_H__
-#define __SYLAR_HTTP_SERVLET_H__
+#ifndef __YANCY_HTTP_SERVLET_H__
+#define __YANCY_HTTP_SERVLET_H__
 
 #include <memory>
 #include <functional>

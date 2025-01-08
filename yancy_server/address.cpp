@@ -11,7 +11,7 @@
 namespace yancy
 {
 
-    static yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
     
     template<class T>
     static T CreateMask(uint32_t bits)  //子网掩码反码
@@ -116,7 +116,7 @@ namespace yancy
                                                                             //  存储结果的 struct addrinfo 结构体指针
         if(error)
         {
-            SYLAR_LOG_DEBUG(g_logger) << "Address::Lookup getaddress(" << host << ", "
+            YANCY_LOG_DEBUG(g_logger) << "Address::Lookup getaddress(" << host << ", "
                 << family << ", " << type << ") err=" << error << " errstr="
                 << gai_strerror(error);
             return false;
@@ -166,7 +166,7 @@ namespace yancy
         struct ifaddrs *next, *results;
         if(getifaddrs(&results) != 0)   //getifaddrs()获取本地网络接口的信息。(创建一个链表results，链表上的每个节点都是一个struct ifaddrs结构)
         {   //失败
-            SYLAR_LOG_DEBUG(g_logger) << "Address::GetInterfaceAddresses getifaddrs "
+            YANCY_LOG_DEBUG(g_logger) << "Address::GetInterfaceAddresses getifaddrs "
                 " err=" << errno << " errstr=" << strerror(errno);
             return false;
         }
@@ -214,7 +214,7 @@ namespace yancy
         }
         catch (...)
         {
-            SYLAR_LOG_ERROR(g_logger) << "Address::GetInterfaceAddresses exception";
+            YANCY_LOG_ERROR(g_logger) << "Address::GetInterfaceAddresses exception";
             freeifaddrs(results);   //释放
             return false;
         }
@@ -312,7 +312,7 @@ namespace yancy
                                                                     //  存储结果的 struct addrinfo 结构体指针
         if(error)   //失败
         {
-            SYLAR_LOG_DEBUG(g_logger) << "IPAddress::Create(" << address
+            YANCY_LOG_DEBUG(g_logger) << "IPAddress::Create(" << address
                 << ", " << port << ") error=" << error
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return nullptr;
@@ -344,7 +344,7 @@ namespace yancy
         int result = inet_pton(AF_INET, address, &rt->m_addr.sin_addr); //IP地址
         if(result <= 0) //失败
         {
-            SYLAR_LOG_DEBUG(g_logger) << "IPv4Address::Create(" << address << ", "
+            YANCY_LOG_DEBUG(g_logger) << "IPv4Address::Create(" << address << ", "
                     << port << ") rt=" << result << " errno=" << errno
                     << " errstr=" << strerror(errno);
             return nullptr;
@@ -440,7 +440,7 @@ namespace yancy
         int result = inet_pton(AF_INET6, address, &rt->m_addr.sin6_addr);   //IP地址
         if(result <= 0) //失败
         {
-            SYLAR_LOG_DEBUG(g_logger) << "IPv6Address::Create(" << address << ", "
+            YANCY_LOG_DEBUG(g_logger) << "IPv6Address::Create(" << address << ", "
                     << port << ") rt=" << result << " errno=" << errno
                     << " errstr=" << strerror(errno);
             return nullptr;

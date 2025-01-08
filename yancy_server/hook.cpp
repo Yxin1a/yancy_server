@@ -15,7 +15,7 @@
 
 #include<dlfcn.h>
 
-yancy::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
+yancy::Logger::ptr g_logger = YANCY_LOG_NAME("system");
 namespace yancy
 {
     //thread_local————t_hook_enable仅可在thread_local上创建的线程上访问。用于协程本地对象的声明
@@ -70,7 +70,7 @@ namespace yancy
 
             g_tcp_connect_timeout->addListener([](const int& old_value, const int& new_value)
             {
-                SYLAR_LOG_INFO(g_logger) << "tcp connect timeout changed from "
+                YANCY_LOG_INFO(g_logger) << "tcp connect timeout changed from "
                                          << old_value << " to " << new_value;
                 s_connect_timeout = new_value;
             });
@@ -167,7 +167,7 @@ retry:  //失败继续读取标签
             int rt=iom->addEvent(fd,(yancy::IOManager::Event)(event));  //添加IOmanager事件
             if(rt)  //添加失败
             {
-                SYLAR_LOG_ERROR(g_logger)<<hook_fun_name<<" addEvent("
+                YANCY_LOG_ERROR(g_logger)<<hook_fun_name<<" addEvent("
                         <<fd<<", "<<event<<")";
                 if(timer)
                 {
@@ -342,7 +342,7 @@ extern "C"  //extern说明 此变量/函数是在别处定义的，要在此处�
             {
                 timer->cancel();    //删除定时器
             }
-            SYLAR_LOG_ERROR(g_logger) << "connect addEvent(" << fd << ", WRITE) error";
+            YANCY_LOG_ERROR(g_logger) << "connect addEvent(" << fd << ", WRITE) error";
         }
 
         int error = 0;

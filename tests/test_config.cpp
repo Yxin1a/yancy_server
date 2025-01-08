@@ -53,19 +53,19 @@ void print_yaml(const YAML::Node &node,int level)   //解析yaml文件
 {
     if(node.IsScalar()) //yaml常量存在
     {
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<std::string(level*4,' ')
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<std::string(level*4,' ')
             <<node.Scalar()<<"-"<<node.Type()<<"-"<<level;
     }
     else if(node.IsNull()) //yaml存在空节点
     {
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<std::string(level*4,' ')
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<std::string(level*4,' ')
             <<"NULL -"<<node.Type()<<"-"<<level;
     }
     else if(node.IsMap()) //yaml二叉树存在数据
     {
         for(auto it=node.begin();it!=node.end();++it)
         {
-            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<std::string(level*4,' ')
+            YANCY_LOG_INFO(YANCY_LOG_ROOT())<<std::string(level*4,' ')
                 <<it->first<<"-"<<it->second.Type()<<"-"<<level;
             print_yaml(it->second,level+1);
         }
@@ -74,7 +74,7 @@ void print_yaml(const YAML::Node &node,int level)   //解析yaml文件
     {
         for(size_t i=0;i<node.size();++i)
         {
-            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<std::string(level*4,' ')
+            YANCY_LOG_INFO(YANCY_LOG_ROOT())<<std::string(level*4,' ')
                 <<i<<"-"<<node[i].Type()<<"-"<<level;
             print_yaml(node[i],level+1);
         }
@@ -87,14 +87,14 @@ void test_yaml()    //要加载的yaml的路径   /home/tq/桌面/yancy/bin/conf
 
     print_yaml(root,0);
 
-    //SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<root;
+    //YANCY_LOG_INFO(YANCY_LOG_ROOT())<<root;
 }
 
 //各种STL类型
 void test_config()  //config配置管理函数
 {
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"before:"<<g_int_value_config->getValue();
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"before:"<<g_float_value_config->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"before:"<<g_int_value_config->getValue();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"before:"<<g_float_value_config->toString();
 
 //其他类型
 #define XX(g_var,name,prefix) \
@@ -102,9 +102,9 @@ void test_config()  //config配置管理函数
         auto& v=g_var->getValue(); \
         for(auto& i : v) \
         { \
-            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<#prefix" "#name": "<<i; \
+            YANCY_LOG_INFO(YANCY_LOG_ROOT())<<#prefix" "#name": "<<i; \
         } \
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<#prefix" "#name"yaml: "<<g_var->toString(); \
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<#prefix" "#name"yaml: "<<g_var->toString(); \
     }
 
 //map<std::string,int>类型————unordered_map<std::string,int>类型
@@ -113,10 +113,10 @@ void test_config()  //config配置管理函数
         auto& v=g_var->getValue(); \
         for(auto& i : v) \
         { \
-            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<#prefix" "#name": {" \
+            YANCY_LOG_INFO(YANCY_LOG_ROOT())<<#prefix" "#name": {" \
                     <<i.first<<"-"<<i.second<<"}"; \
         } \
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<#prefix" "#name"yaml: "<<g_var->toString(); \
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<#prefix" "#name"yaml: "<<g_var->toString(); \
     }
 
     XX(g_int_vec_value_config,int_vec,before);
@@ -129,8 +129,8 @@ void test_config()  //config配置管理函数
     YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
 
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"after:"<<g_int_value_config->getValue();
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"after:"<<g_float_value_config->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after:"<<g_int_value_config->getValue();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after:"<<g_float_value_config->toString();
 
     XX(g_int_vec_value_config,int_vec,after);
     XX(g_int_list_value_config,int_list,after);
@@ -218,38 +218,38 @@ yancy::ConfigVar<std::map<std::string,std::vector<Person>>>::ptr g_person_vec_ma
 
 void test_class()   //自定义类型处理
 {
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"before: "<<g_person->getValue().toString()<<"-"<<g_person->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"before: "<<g_person->getValue().toString()<<"-"<<g_person->toString();
     
 #define XX_PM(g_var,prefix) \
     { \
         auto m=g_person_map->getValue(); \
         for(auto& i : m) \
         { \
-            SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<prefix<<": "<<i.first<<"-"<<i.second.toString(); \
+            YANCY_LOG_INFO(YANCY_LOG_ROOT())<<prefix<<": "<<i.first<<"-"<<i.second.toString(); \
         } \
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<prefix<<": size="<<m.size(); \
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<prefix<<": size="<<m.size(); \
     }
 
     g_person->addListener([](const Person& old_value,const Person& new_value){   //回调函数测试
-        SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"old_value="<<old_value.toString()
+        YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"old_value="<<old_value.toString()
             <<" new_value="<<new_value.toString();
     });
 
     XX_PM(g_person_map,"class.map before");
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"begin: "<<g_person_vec_map->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"begin: "<<g_person_vec_map->toString();
 
     YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/test.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
 
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"after: "<<g_person->getValue().toString()<<"-"<<g_person->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after: "<<g_person->getValue().toString()<<"-"<<g_person->toString();
     XX_PM(g_person_map,"class.map after");
-    SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"after: "<<g_person_vec_map->toString();
+    YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after: "<<g_person_vec_map->toString();
 }
 
 void test_log()
 {
-    static yancy::Logger::ptr system_log=SYLAR_LOG_NAME("system");  //找到system日志器
-    SYLAR_LOG_INFO(system_log)<<"hello system"<<std::endl;  //存进system日志文件
+    static yancy::Logger::ptr system_log=YANCY_LOG_NAME("system");  //找到system日志器
+    YANCY_LOG_INFO(system_log)<<"hello system"<<std::endl;  //存进system日志文件
     std::cout<<yancy::LoggerMgr::GetInstance()->toYamlString()<<std::endl;  //打印默认值配置参数
 
     YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log.yml");
@@ -260,11 +260,11 @@ void test_log()
     std::cout<<"======================"<<std::endl;
     std::cout<<root<<std::endl; //打印log.yml所有
 
-    SYLAR_LOG_INFO(system_log)<<"hello system"<<std::endl;
+    YANCY_LOG_INFO(system_log)<<"hello system"<<std::endl;
 
     //_____________________________
     system_log->setFormatter("%d - %m%n");  //更改日志，模板
-    SYLAR_LOG_INFO(system_log)<<"hello system"<<std::endl;
+    YANCY_LOG_INFO(system_log)<<"hello system"<<std::endl;
 }
 
 void test_loadconf()
@@ -285,7 +285,7 @@ int main(int argc,char ** argv)
     // return 0;
 
     // yancy::Config::Visit([](yancy::ConfigVarBase::ptr var){
-    //     SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"name="<<var->getName()
+    //     YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"name="<<var->getName()
     //                             <<" description="<<var->getDescription()
     //                             <<" typename="<<var->getTypeName()
     //                             <<" value="<<var->toString();

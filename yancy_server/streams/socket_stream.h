@@ -9,8 +9,8 @@
  * @date 2024-4-25
 */
 
-#ifndef __SYLAR_SOCKET_STREAM_H__
-#define __SYLAR_SOCKET_STREAM_H__
+#ifndef __YANCY_SOCKET_STREAM_H__
+#define __YANCY_SOCKET_STREAM_H__
 
 #include "yancy_server/stream.h"
 #include "yancy_server/socket.h"

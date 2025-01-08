@@ -25,7 +25,7 @@
 
 namespace yancy
 {
-    static yancy::Logger::ptr g_logger=SYLAR_LOG_NAME("system");
+    static yancy::Logger::ptr g_logger=YANCY_LOG_NAME("system");
 
     //thread_local————t_scheduler仅可在thread_local上创建的协程上访问。用于协程本地对象的声明
     static thread_local Scheduler* t_scheduler=nullptr;     //当前协程调度器指针
@@ -33,14 +33,14 @@ namespace yancy
 
     Scheduler::Scheduler(size_t threads,bool use_caller,const std::string& name):m_name(name)   //初始化
     {
-        SYLAR_ASSERT(threads>0);    //线程数量大于0
+        YANCY_ASSERT(threads>0);    //线程数量大于0
         
         if(use_caller)      //是否使用当前调用线程
         {
             yancy::Fiber::GetThis();    //返回当前所在的协程，没有则创建新的主协程(无执行函数)
             --threads;
 
-            SYLAR_ASSERT(GetThis()==nullptr);
+            YANCY_ASSERT(GetThis()==nullptr);
             t_scheduler=this;
 
             m_rootFiber.reset(new Fiber(std::bind(&Scheduler::run,this),0,true));  //主协程存协程调度器的执行函数(创建子协程)
@@ -59,7 +59,7 @@ namespace yancy
 
     Scheduler::~Scheduler() //释放
     {
-        SYLAR_ASSERT(m_stopping);
+        YANCY_ASSERT(m_stopping);
         if(GetThis()==this)
         {
             t_scheduler=nullptr;
@@ -84,7 +84,7 @@ namespace yancy
             return;
         }
         m_stopping=false;
-        SYLAR_ASSERT(m_threads.empty()); //启动时，线程池只能为空
+        YANCY_ASSERT(m_threads.empty()); //启动时，线程池只能为空
 
         m_threads.resize(m_threadCount); //resize()重新定义vector的大小
         for(size_t i=0;i<m_threadCount;++i) //重新设置线程池
@@ -107,7 +107,7 @@ namespace yancy
                 && (m_rootFiber->getState()==Fiber::TERM
                     || m_rootFiber->getState()==Fiber::INIT))   //判断是否符合停止协程调度器的条件
         {
-            SYLAR_LOG_INFO(g_logger)<<this<<" stopped";
+            YANCY_LOG_INFO(g_logger)<<this<<" stopped";
             m_stopping=true;
 
             if(stopping())
@@ -120,11 +120,11 @@ namespace yancy
         // bool exit_on_this_fiber=false;
         if(m_rootThread!=-1)
         {
-            SYLAR_ASSERT(GetThis()==this);
+            YANCY_ASSERT(GetThis()==this);
         }
         else
         {
-            SYLAR_ASSERT(GetThis()!=this);
+            YANCY_ASSERT(GetThis()!=this);
         }
 
         m_stopping=true;
@@ -165,7 +165,7 @@ namespace yancy
 
     void Scheduler::run()     //协程调度函数,创建idle、子协程，并执行子协程函数
     {
-        SYLAR_LOG_DEBUG(g_logger) << m_name << " run";
+        YANCY_LOG_DEBUG(g_logger) << m_name << " run";
 
         set_hook_enable(true);
         setThis();  //设置为当前的协程调度器
@@ -195,7 +195,7 @@ namespace yancy
                         continue;
                     }
 
-                    SYLAR_ASSERT(it->fiber || it->cb);  
+                    YANCY_ASSERT(it->fiber || it->cb);  
                     if(it->fiber && it->fiber->getState()==Fiber::EXEC)     //不需要执行的待执行协程(正在执行)
                     {
                         ++it;
@@ -269,7 +269,7 @@ namespace yancy
                 }
                 if(idle_fiber->getState()==Fiber::TERM) //所有任务已完成
                 {
-                    SYLAR_LOG_INFO(g_logger)<<"idle fiber term";
+                    YANCY_LOG_INFO(g_logger)<<"idle fiber term";
                     break;
                 }
 
@@ -291,7 +291,7 @@ namespace yancy
 
     void Scheduler::switchTo(int thread)
     {
-        SYLAR_ASSERT(Scheduler::GetThis() != nullptr);
+        YANCY_ASSERT(Scheduler::GetThis() != nullptr);
         if(Scheduler::GetThis() == this)
         {
             if(thread == -1 || thread == yancy::GetThreadId())
@@ -324,7 +324,7 @@ namespace yancy
 
     void Scheduler::tickle()  //通知协程调度器有任务
     {
-        SYLAR_LOG_INFO(g_logger)<<"tickle";
+        YANCY_LOG_INFO(g_logger)<<"tickle";
     }
 
     bool Scheduler::stopping()    //返回是否已经停止
@@ -336,7 +336,7 @@ namespace yancy
 
     void Scheduler::idle()    //协程无任务可调度、线程不能停止时执行idle协程(所有任务已完成)
     {
-        SYLAR_LOG_INFO(g_logger)<<"idle";
+        YANCY_LOG_INFO(g_logger)<<"idle";
         while (!stopping())
         {
             yancy::Fiber::YieldToHold();
