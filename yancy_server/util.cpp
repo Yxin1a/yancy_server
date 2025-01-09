@@ -164,7 +164,7 @@ namespace yancy
     }
 
     bool FSUtil::Mkdir(const std::string& dirname)  //创建目录
-    {   //  /home/yangxin目录
+    {
         if(__lstat(dirname.c_str()) == 0)   //存在
         {
             return true;
@@ -182,7 +182,7 @@ namespace yancy
                     break;
                 }
             }
-            if(ptr != nullptr)  //  /home/yangxin/  错误
+            if(ptr != nullptr)  // 错误
             {
                 break;
             }

@@ -23,6 +23,8 @@ namespace yancy
 
         auto pos = m_exe.find_last_of("/"); //find_last_of逆向查找在原字符串中最后一个与指定字符串（或字符）中的某个字符匹配的字符，返回它的位置
         m_cwd = m_exe.substr(0, pos) + "/"; //可执行文件的路径  substr复制子字符串
+        auto item_pos = m_cwd.find_last_of("/",m_cwd.length()-2);
+        m_item = m_cwd.substr(0,item_pos);
 
         m_program = argv[0];    //当前的执行进程(main函数)路径
         // -config 参数1

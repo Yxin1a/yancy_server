@@ -39,8 +39,8 @@ namespace yancy
         void removeHelp(const std::string& key);    //删除用途信息
         void printHelp();   //打印用途信息
 
-        const std::string& getExe() const { return m_exe;}  //获取绝对路径(真正路径)    /home/tq/桌面/yancy/bin/test_env.exe
-        const std::string& getCwd() const { return m_cwd;}  //获取可执行文件的路径  /home/tq/桌面/yancy/bin/
+        const std::string& getExe() const { return m_exe;}  //获取绝对路径(真正路径)    例如/home/tq/桌面/yancy/bin/test_env.exe
+        const std::string& getCwd() const { return m_cwd;}  //获取可执行文件的路径  例如/home/tq/桌面/yancy/bin/
 
         bool setEnv(const std::string& key, const std::string& val);    //设置环境变量
         std::string getEnv(const std::string& key, const std::string& default_value = "");  //获取环境变量
@@ -56,8 +56,9 @@ namespace yancy
                                                                     //  应用：是否使用某种功能
 
         std::string m_program;  //当前的执行进程(main函数)路径  ../bin/test_env.exe
-        std::string m_exe;  //绝对路径(真正路径)    /home/tq/桌面/yancy/bin/test_env.exe
-        std::string m_cwd;  //可执行文件的路径  /home/tq/桌面/yancy/bin/
+        std::string m_exe;  //绝对路径(真正路径)    例如/home/tq/桌面/yancy/bin/test_env.exe
+        std::string m_cwd;  //可执行文件的路径  例如/home/tq/桌面/yancy/bin/
+        std::string m_item; //项目的路径    例如/home/tq/桌面/yancy
     };
 
     typedef yancy::Singleton<Env> EnvMgr;   //单例模式封装

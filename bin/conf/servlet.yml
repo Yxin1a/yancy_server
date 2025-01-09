@@ -1,3 +1,4 @@
 servlets: #相对路径
+    # - uri: /home/tq/桌面/yancy/yancy_server/http/html/baidu
     - uri: /yancy_server/http/html/baidu
-      type: html  #类型
+      type: html  #类型s

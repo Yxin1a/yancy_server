@@ -6,6 +6,7 @@ int count=0;    //公共数据
 //yancy::RWMutex s_mutex; //读写互斥量
 yancy::Mutex s_mutex; //互斥量
 
+std::string path = std::getenv("PWD");
 
 void fun1()
 {
@@ -42,7 +43,7 @@ int main(int argc,char** argv)
 {
     YANCY_LOG_INFO(g_logger)<<"thread test begin";
 
-    YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log2.yml");  //LoadFile（）将yaml文件生成Node形式
+    YAML::Node root=YAML::LoadFile(path+"/conf/log2.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
 
     std::vector<yancy::Thread::ptr> thrs;

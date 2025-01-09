@@ -3,6 +3,7 @@
 #include"yancy_server/env.h"
 #include <yaml-cpp/yaml.h>
 #include <iostream>
+ 
     //Node 是 yaml-cpp 中的核心概念，是最重要的数据结构
     /*Null 空节点
     Type是yaml格式的类型
@@ -49,6 +50,8 @@ yancy::ConfigVar<std::map<std::string,int>>::ptr g_str_int_map_value_config=
 yancy::ConfigVar<std::unordered_map<std::string,int>>::ptr g_str_int_umap_value_config=
     yancy::Config::Lookup("system.str_int_umap",std::unordered_map<std::string,int>{{"k",2}},"system str int umap");
 
+std::string path = std::getenv("PWD");
+
 void print_yaml(const YAML::Node &node,int level)   //解析yaml文件
 {
     if(node.IsScalar()) //yaml常量存在
@@ -83,7 +86,7 @@ void print_yaml(const YAML::Node &node,int level)   //解析yaml文件
 
 void test_yaml()    //要加载的yaml的路径   /home/tq/桌面/yancy/bin/conf/log.yml
 {
-    YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log.yml");
+    YAML::Node root=YAML::LoadFile(path+"/conf/log.yml");
 
     print_yaml(root,0);
 
@@ -126,7 +129,7 @@ void test_config()  //config配置管理函数
     XX_M(g_str_int_map_value_config,str_int_map,before);
     XX_M(g_str_int_umap_value_config,str_int_umap,before);
 
-    YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log.yml");  //LoadFile（）将yaml文件生成Node形式
+    YAML::Node root=YAML::LoadFile(path+"/conf/log.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
 
     YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after:"<<g_int_value_config->getValue();
@@ -238,7 +241,7 @@ void test_class()   //自定义类型处理
     XX_PM(g_person_map,"class.map before");
     YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"begin: "<<g_person_vec_map->toString();
 
-    YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/test.yml");  //LoadFile（）将yaml文件生成Node形式
+    YAML::Node root=YAML::LoadFile(path+"/conf/test.yml");  //LoadFile（）将yaml文件生成Node形式
     yancy::Config::LoadFromYaml(root);
 
     YANCY_LOG_INFO(YANCY_LOG_ROOT())<<"after: "<<g_person->getValue().toString()<<"-"<<g_person->toString();
@@ -252,7 +255,7 @@ void test_log()
     YANCY_LOG_INFO(system_log)<<"hello system"<<std::endl;  //存进system日志文件
     std::cout<<yancy::LoggerMgr::GetInstance()->toYamlString()<<std::endl;  //打印默认值配置参数
 
-    YAML::Node root=YAML::LoadFile("/home/tq/桌面/yancy/bin/conf/log.yml");
+    YAML::Node root=YAML::LoadFile(path+"/conf/log.yml");
     yancy::Config::LoadFromYaml(root);  //使用YAML::Node初始化配置模块————配合yaml文件使用******事件变更
 
     std::cout<<"======================"<<std::endl;

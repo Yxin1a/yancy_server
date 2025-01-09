@@ -46,10 +46,13 @@ namespace yancy
                     ,yancy::http::HttpResponse::ptr rsp
                     ,yancy::http::HttpSession::ptr session)
             {
+                YANCY_LOG_INFO(g_logger) << "请求" <<req->getPath()<<"的html类型文件";
                 std::string path="/home/tq/桌面/yancy"+req->getPath()+".html";
+                // std::string path=req->getPath()+".html";
                 std::stringstream ss;
                 if(!FileIfream(ss,path))
                 {
+                    YANCY_LOG_ERROR(g_logger) << "请求" <<req->getPath()<<"文件获取失败";
                     return false;
                 }
                 rsp->setBody(ss.str());

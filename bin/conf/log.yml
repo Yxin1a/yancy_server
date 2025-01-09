@@ -14,18 +14,18 @@
 #       - type: FileLogAppender
 #         file: system.txt
 #         formatter: '%d%T[%p]%T%m%n'
-#       - type: StdoutLogAppender /home/tq/桌面/yancy/
+#       - type: StdoutLogAppender 
 
 logs:
     - name: root
       level: debug  #最小日志打印等级
       appenders:
           - type: FileLogAppender
-            file: apps/logs/root.log #不存在就会报错（现在不存在）
+            file: /home/tq/桌面/yancy/apps/logs/root.log #不存在就会报错（现在不存在）  #绝对路径，到时候好改路径
           - type: StdoutLogAppender
     - name: system
       level: debug  #最小日志打印等级
       appenders:
           - type: FileLogAppender
-            file: apps/logs/system.log #不存在就会报错（现在不存在）
+            file: /home/tq/桌面/yancy/apps/logs/system.log #不存在就会报错（现在不存在）  #绝对路径，到时候好改路径
           - type: StdoutLogAppender
