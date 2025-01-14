@@ -340,4 +340,42 @@ namespace yancy
         return ip;
     }
 
+    bool EurdInit()
+    {
+        uid = getuid();
+        gid = getgid();
+    }
+
+    bool RunRoot()
+    {
+
+        if (setuid(0) == -1)
+        {
+            YANCY_LOG_ERROR(g_logger) << "Failed to set UID to root (setuid): " << strerror(errno);
+            return false;
+        }
+
+        if (setgid(0) == -1)
+        {
+            YANCY_LOG_ERROR(g_logger) << "Failed to set GID to root (setgid): " << strerror(errno);
+            return false;
+        }
+        return true;
+    }
+
+    bool RunNormalUser()
+    {
+        if (setuid(uid) == -1)
+        {
+            YANCY_LOG_ERROR(g_logger) << "Failed to reset UID: " << strerror(errno) ;
+            return false;
+        }
+
+        if (setgid(gid) == -1)
+        {
+            YANCY_LOG_ERROR(g_logger) << "Failed to reset GID: " << strerror(errno) ;
+            return false;
+        }
+        return true;
+    }
 }

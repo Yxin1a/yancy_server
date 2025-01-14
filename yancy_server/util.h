@@ -10,9 +10,10 @@
 #include <sys/syscall.h>
 #include <stdio.h>
 #include <stdint.h>
-#include<string>
-#include<vector>
-#include<boost/lexical_cast.hpp>
+#include <string>
+#include <vector>
+#include <boost/lexical_cast.hpp>
+#include <cstdlib>
 
 namespace yancy
 {
@@ -322,6 +323,25 @@ namespace yancy
         return ss.str();
     }
 
+    /// 当前用户的 UID
+    static uid_t uid = 0;
+    /// 当前用户的 GID
+    static uid_t gid = 0;
+
+    /**
+     * @brief 当前用户UID GID初始化
+     */
+    bool EurdInit();
+    
+    /**
+     * @brief 临时以root用户运行
+     */
+    bool RunRoot();
+
+    /**
+     * @brief 恢复以普通用户运行
+     */
+    bool RunNormalUser();
 }
 
 #endif

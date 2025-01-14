@@ -8,6 +8,7 @@
 #include "yancy_server/config.h"
 #include "yancy_server/env.h"
 #include "yancy_server/log.h"
+#include "yancy_server/util.h"
 // #include "yancy/module.h"
 // #include "yancy/rock/rock_stream.h"
 // #include "yancy/worker.h"
@@ -46,6 +47,7 @@ namespace yancy
     Application::Application()  //初始化
     {
         s_instance = this;
+        yancy::EurdInit();
     }
 
     bool Application::init(int argc, char** argv)   //main函数参数解析
@@ -112,6 +114,11 @@ namespace yancy
 
         std::string pidfile = g_server_work_path->getValue()
                                     + "/" + g_server_pid_file->getValue();
+        if(!yancy::RunRoot())
+        {
+            YANCY_LOG_ERROR(g_logger) << "提权失败" << std::endl;
+            return false;
+        }
         if(yancy::FSUtil::IsRunningPidfile(pidfile))    //判断进程pid文件是否存在且正在运行
         {
             YANCY_LOG_ERROR(g_logger) << "server is running:" << pidfile;
@@ -124,6 +131,12 @@ namespace yancy
             YANCY_LOG_FATAL(g_logger) << "create work path [" << g_server_work_path->getValue()
                 << " errno=" << errno << " errstr=" << strerror(errno);
             return false;
+        }
+        
+        if(!yancy::RunNormalUser())
+        {
+            YANCY_LOG_ERROR(g_logger) << "恢复权限失败" << std::endl;
+            exit(0);
         }
         return true;
     }
