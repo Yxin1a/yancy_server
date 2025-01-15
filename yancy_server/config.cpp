@@ -106,7 +106,7 @@ namespace yancy
             }
             try
             {
-                YAML::Node root = YAML::LoadFile(i);    //加载i的(yml)文件
+                YAML::Node root = YAML::LoadFile(i);    //加载的(yml)文件
                 LoadFromYaml(root);
                 YANCY_LOG_INFO(g_logger) << "LoadConfFile file="
                     << i << " ok";
